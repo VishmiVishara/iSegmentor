@@ -1,0 +1,200 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Upload Dataset {% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% load static %}
+
+
+{% block content %}
+
+
+<!-- Header -->
+<div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
+  <div class="container-fluid">
+    <div class="header-body">
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid mt--8">
+  <div class="card bg-secondary shadow">
+    <div class="card-header bg-white border-0">
+      <div class="row align-items-center">
+        <div class="col-8">
+          <h3 class="mb-0">Create Dataset Profile</h3>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="nav-wrapper">
+        <ul class="nav nav-pills nav-fill flex-column flex-md-row" id="tabs-icons-text" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link mb-sm-3 mb-md-0 active" id="tabs-icons-text-1-tab" data-toggle="tab"
+              href="#tabs-icons-text-5" role="tab" aria-controls="tabs-icons-text-5" aria-selected="true"><i
+                class="ni ni-cloud-upload-96 mr-2"></i>Dataset</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link mb-sm-3 mb-md-0" id="tabs-icons-text-2-tab" data-toggle="tab" href="#tabs-icons-text-6"
+              role="tab" aria-controls="tabs-icons-text-2" aria-selected="false"><i
+                class="ni ni-bell-55 mr-2"></i>Config</a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="tab-pane fade" id="tabs-icons-text-5" role="tabpanel" aria-labelledby="tabs-icons-text-5-tab">
+
+        <form method="post" id="create_dataset" enctype="multipart/form-data">
+          <h6 class="heading-small text-muted mb-4">Dataset Profile</h6>
+          <div class="pl-lg-4">
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="form-group">
+                  <label class="form-control-label" for="input-datasetname">Dataset Name</label>
+                  <input type="text" id="datasetname" name="datasetname" class="form-control form-control-alternative"
+                    placeholder="Dataset Name">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <hr class="my-4" />
+
+          <div class="row justify-content-evenly">
+            <div class="col-6">
+              <div class="card shadow-lg p-3 mb-3 bg-body rounded" style="width: 30vw; height: 30vh; margin:0 auto;">
+                <div class="card-body">
+                  <h5 class="heading-small">Original Image Dataset</h5>
+                  {% csrf_token %}
+                  <input type="file" name="originalImage">
+                </div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="card align-self-center shadow-lg p-3 mb-3 bg-body rounded"
+                style="width: 30vw; height: 30vh; margin:0 auto;">
+                <div class="card-body">
+                  <h5 class="heading-small">Ground Thruth / Traget Image Dataset</h5>
+                  {% csrf_token %}
+                  <input type="file" name="GTImage">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <hr class="my-4" />
+
+          <button name="save-dataset" style="color:white;" class="btn bg-success">Save Dataset</button>
+          <!-- Button trigger modal -->
+          <button type="button" name="config" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+            Configaration
+          </button>
+        </form>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Configaration</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="nav-wrapper">
+          <ul class="nav nav-pills nav-fill flex-column flex-md-row" id="tabs-icons-text" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link mb-sm-3 mb-md-0 active" id="tabs-icons-text-1-tab" data-toggle="tab"
+                href="#tabs-icons-text-1" role="tab" aria-controls="tabs-icons-text-1" aria-selected="true"><i
+                  class="ni ni-cloud-upload-96 mr-2"></i>Dataset</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link mb-sm-3 mb-md-0" id="tabs-icons-text-2-tab" data-toggle="tab" href="#tabs-icons-text-2"
+                role="tab" aria-controls="tabs-icons-text-2" aria-selected="false"><i
+                  class="ni ni-bell-55 mr-2"></i>Search</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link mb-sm-3 mb-md-0" id="tabs-icons-text-3-tab" data-toggle="tab" href="#tabs-icons-text-3"
+                role="tab" aria-controls="tabs-icons-text-3" aria-selected="false"><i
+                  class="ni ni-calendar-grid-58 mr-2"></i>Train</a>
+            </li>
+          </ul>
+        </div>
+        <div class="card shadow">
+          <div class="card-body">
+            <div class="tab-content" id="myTabContent">
+              <div class="tab-pane fade show active" id="tabs-icons-text-1" role="tabpanel"
+                aria-labelledby="tabs-icons-text-1-tab">
+
+                <form method="GET">{% csrf_token %}
+                  <label> Dataset name </label>
+                  <input type="text" class="form-control" id="dataset" value="{{ config.data.dataset }}"> <br>
+                  <label> Train / Test Split </label>
+                  <input type="text" class="form-control" name="split" value="0.7"> <br>
+                </form>
+
+              </div>
+
+              <div class="tab-pane fade" id="tabs-icons-text-2" role="tabpanel" aria-labelledby="tabs-icons-text-2-tab">
+                <form method="GET">{% csrf_token %}
+                  <label> Epoch </label>
+                  <input type="text" class="form-control" name="s_epoch" value="{{ config.searching.epoch }}"> <br>
+                  <label> Batch Size </label>
+                  <input type="text" class="form-control" name="s_batch_size" value="{{ config.searching.batch_size }}">
+                  <br>
+                  <label> Train Potion </label>
+                  <input type="text" class="form-control" name="train_portion"
+                    value="{{ config.searching.train_portion }}"> <br>
+                  <label> Achitecture Optimizer </label>
+                  <input type="text" class="form-control" name="arch_optimizer"
+                    value="{{ config.searching.arch_optimizer.name }}"> <br>
+                  <label> Loss: </label>
+                  <input type="text" class="form-control" name="s_loss" value="{{ config.searching.loss.name }}"> <br>
+                </form>
+              </div>
+
+              <div class="tab-pane fade" id="tabs-icons-text-3" role="tabpanel" aria-labelledby="tabs-icons-text-3-tab">
+                <form method="GET">{% csrf_token %}
+                  <label> U-Net Architecture </label>
+                  <input type="text" class="form-control" name="geno_type" value="{{ config.training.geno_type }}"> <br>
+                  <label> Epoch </label>
+                  <input type="text" class="form-control" name="t_epoch" value="{{ config.training.epoch }}"> <br>
+                  <label> Train Batch Size </label>
+                  <input type="text" class="form-control" name="t_batch_size" value="{{ config.training.batch_size }}">
+                  <br>
+                  <label> Validation Batch Size </label>
+                  <input type="text" class="form-control" name="val_batch_size"
+                    value="{{ config.training.val_batch_size }}"> <br>
+                  <label> Achitecture Optimizer </label>
+                  <input type="text" class="form-control" name="model_optimizer"
+                    value="{{ config.training.model_optimizer.name }}"> <br>
+                  <label> Loss: </label>
+                  <input type="text" class="form-control" name="t_loss" value="{{ config.training.loss.name }}"> <br>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" name="config_save" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
+
+<!-- Specific JS goes HERE -->
+{% block javascripts %}{% endblock javascripts %}

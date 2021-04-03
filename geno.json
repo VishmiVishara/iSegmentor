@@ -1,0 +1,61 @@
+{
+    "NAS_UNET_V1_En" : 
+    {
+        "down": [{"down_conv":0}, {"down_dil_conv": 1}, {"down_dep_conv": 0}, 
+                         {"down_dep_conv": 1}],
+        "up": [{"cweight": 0}, {"up_cweight": 1}, {"conv": 0}, {"up_cweight": 1}],
+        "down_concat":[2, 4],
+         "up_concat": [2,4]
+    },
+
+    "NAS_UNET_V1_En_sh" : 
+    {
+        "down": [{"down_cweight":0}, {"down_cweight": 1}, {"down_dep_conv": 0}, 
+                         {"down_cweight": 1}],
+        "up": [{"dep_conv": 0}, {"up_cweight": 1}, {"cweight": 0}, {"up_cweight": 1}],
+        "down_concat":[2, 4],
+         "up_concat": [2,4]
+    },
+
+    
+    "NAS_UNET_V2_En" : 
+    {
+        "down": [{"down_dep_conv":0}, {"down_dil_conv": 1}, {"down_cweight": 0}, {"down_dep_conv": 1}, {"down_dep_conv": 1}, {"down_dep_conv": 0}],
+        "up": [{"identity": 0}, {"up_dep_conv": 1}, {"cweight": 0}, {"up_cweight": 1}, {"conv": 2}, {"up_cweight": 1}],
+        "down_concat":[2, 5],
+         "up_concat": [2, 5]
+    },
+
+     
+    "NAS_UNET_V2" : 
+    {
+        "down": [{"down_conv":1}, {"down_dep_conv": 0}, {"down_cweight": 1}, {"down_dil_conv": 0}, {"down_dil_conv": 1}, {"down_conv": 0}],
+        "up": [{"identity": 0}, {"up_cweight": 1}, {"identity": 2}, {"up_cweight": 1}, {"cweight": 3}, {"up_conv": 1}],
+        "down_concat":[2, 5],
+         "up_concat": [2, 5]
+    },
+
+    "NAS_UNET_V3" : 
+    {
+        "down": [{"down_dil_conv":1}, {"down_cweight": 0}, {"down_cweight": 0}, {"down_cweight": 1}, {"down_cweight": 0}, {"conv": 3}, {"down_cweight": 0}, {"conv": 4}],
+        "up": [{"cweight":0 }, {"up_cweight": 1}, {"conv": 2}, {"up_cweight": 1}, {"up_cweight": 1}, {"conv": 3}, {"up_cweight": 1}, {"conv": 4}],
+        "down_concat":[2, 6],
+         "up_concat": [2, 6]
+    },
+
+    "NAS_UNET_V3_En_sh" : 
+    {
+        "down": [{"down_dep_conv":0}, {"down_cweight": 1}, {"down_cweight": 2}, {"down_cweight": 1}, {"down_cweight": 0}, {"identity": 3}, {"down_cweight": 1}, {"down_dil_conv": 1}, {"conv": 3}],
+        "up": [{"cweight":0 }, {"up_conv": 1}, {"cweight": 2}, {"up_conv": 1}, {"cweight": 3}, {"up_conv": 1}, {"cweight": 0}, {"up_cweight": 1}],
+        "down_concat":[2, 6],
+         "up_concat": [2, 6]
+    },
+
+    "NAS_UNET_NEW_V3" : 
+    {
+        "down": [{"down_dep_conv":0}, {"down_cweight": 1}, {"down_conv": 1}, {"max_pool": 0}, {"max_pool": 1}, {"cweight": 2}, {"down_cweight": 1}, {"down_dil_conv": 0}, {"down_dil_conv": 1}],
+        "up": [{"dep_conv":0 }, {"up_conv": 1}, {"shuffle_conv": 0}, {"up_cweight": 1}, {"identity": 2}, {"up_cweight": 1}, {"dil_conv": 3}, {"up_cweight": 1}],
+        "down_concat":[2, 6],
+         "up_concat": [2, 6]
+    }
+}

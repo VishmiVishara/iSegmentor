@@ -9,16 +9,18 @@ from django.http import HttpResponse
 from django import template
 import core.settings as sett
 import json
+from pathlib import Path
+from .genotype import Genotype
 
 setting_obj = ""
+dataset_list = ["CityScapes", "PASCAL VOC 2012" ]
 original_dataset_path = sett.MEDIA_ROOT+"/{}/original_data"
 gt_dataset_path = sett.MEDIA_ROOT+"/{}/gt_data"
 
+media_folder = sett.MEDIA_ROOT
 config_path = sett.CONFIG_ROOT
 
 # create a folder in the given path
-
-
 def createFolder(directory):
     try:
         if not os.path.exists(directory):
@@ -27,31 +29,8 @@ def createFolder(directory):
         print('ERROR: Directory Exist', str(e))
         logging.info('ERROR: Directory Exist. ' + directory)
 
-
-def pages(request):
-    context = {}
-    # All resource paths end in .html.
-    # Pick out the html file name from the url. And load that template.
-    try:
-
-        load_template = request.path.split('/')[-1]
-        context['segment'] = load_template
-
-        html_template = loader.get_template(load_template)
-        return HttpResponse(html_template.render(context, request))
-
-    except template.TemplateDoesNotExist:
-
-        html_template = loader.get_template('page-404.html')
-        return HttpResponse(html_template.render(context, request))
-
-    except:
-
-        html_template = loader.get_template('page-500.html')
-        return HttpResponse(html_template.render(context, request))
-
-
 def index(request):
+    print("index load")
     context = {}
     global setting_obj
     
@@ -86,6 +65,10 @@ def index(request):
             GTImage_filename = fs.save(
             gt_data_path + r"/" + gtImage.name, gtImage)
             gt_uploaded_file_url = fs.url(GTImage_filename)
+
+            dataset_list.append(datasetName)
+            print(dataset_list)
+
 
     if request.method == 'GET':
         # get dataset name to create a folder to save data
@@ -144,3 +127,57 @@ def index(request):
                 print(context['config'])
 
     return render(request, 'index.html', context)
+
+def search(request):
+    html_template = loader.get_template('search.html')
+    print("Load Search")
+    context = {}
+    context["dataset_list"] = dataset_list
+
+    return HttpResponse(html_template.render(context, request))
+
+def train(request):
+    print("Load train")
+    context = {}
+    context["dataset_list"] = dataset_list
+
+    with open("geno.json") as json_out:
+        data = json.load(json_out)
+        #print(data["NAS_UNET_V2_En"]["down"])
+
+        architecture_list = []
+        architecture_list = data.keys()
+        list(architecture_list)
+
+        context["architecture_list"] = architecture_list
+
+        list_down_tuples = []
+        list_up_tuples = []
+        down_range = []
+        up_range = []
+
+        for obj in data["NAS_UNET_V2_En"]["down"]:
+            for key,value in obj.items():
+                list_down_tuples.append((key,value))
+        
+        for obj in data["NAS_UNET_V2_En"]["up"]:
+            for key,value in obj.items():
+                list_up_tuples.append((key,value))
+            
+        down_range = range(data["NAS_UNET_V2_En"]['down_concat'][0], data["NAS_UNET_V2_En"]['down_concat'][1])
+        up_range   = range(data["NAS_UNET_V2_En"]['up_concat'][0], data["NAS_UNET_V2_En"]['up_concat'][1])
+
+        print(down_range)
+        print(up_range)
+
+        print(list_down_tuples)
+        print(list_up_tuples)
+
+        geno = Genotype(down=list_down_tuples, down_concat=down_range, up=list_up_tuples, up_concat=up_range)
+
+        print(geno)
+
+    html_template = loader.get_template('train.html')
+    return HttpResponse(html_template.render(context, request))
+    
+
