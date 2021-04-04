@@ -19,7 +19,7 @@ from util.schedulers import get_scheduler
 
 from util.metrics import *
 from util.utils import *
-from models import get_segmentation_model
+from models.load import get_segmentation_model
 from models.discriminator import *
 import models.geno_searched as geno_types
 from tensorboardX import SummaryWriter
