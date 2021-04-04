@@ -24,3 +24,8 @@ package-lock.json
 staticfiles/*
 !staticfiles/.gitkeep 
 .vscode/symbols.json
+
+app/datasets/cityscapes.zip
+app/datasets/cityscapes/
+
+app/logs
