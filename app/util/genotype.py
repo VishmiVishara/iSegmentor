@@ -30,6 +30,7 @@ CellPos = [
 ]
 
 class GenoParser:
+
     def __init__(self, meta_node_num=4):
         self._meta_node_num = meta_node_num
 
@@ -107,3 +108,8 @@ class GenoParser:
             start = normal_op_end
             n += 1
         return gene
+
+
+    
+if __name__ == '__main__':
+    print("dfds")

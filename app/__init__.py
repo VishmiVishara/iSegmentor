@@ -1,4 +1,3 @@
-# -*- encoding: utf-8 -*-
-"""
-Copyright (c) 2019 - present AppSeed.us
-"""
+import os
+import sys
+sys.path.append(os.path.dirname(os.path.realpath(__file__)))

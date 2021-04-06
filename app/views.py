@@ -7,18 +7,33 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.template import loader
 from django.http import HttpResponse
 from django import template
-import core.settings as sett
+import schedule
+import time
+from pathlib import Path
 import json
 from pathlib import Path
-from .genotype import Genotype
+from genotype import Genotype
+import plotly.offline as opy
+import plotly.graph_objs as go
+from random import randrange
+
+BASE_DIR = Path(__file__).parent
+CORE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+MEDIA_ROOT = os.path.join(CORE_DIR, 'media')
+CONFIG_ROOT = os.path.join(BASE_DIR, 'configs')
 
 setting_obj = ""
 dataset_list = ["CityScapes", "PASCAL VOC 2012" ]
-original_dataset_path = sett.MEDIA_ROOT+"/{}/original_data"
-gt_dataset_path = sett.MEDIA_ROOT+"/{}/gt_data"
+original_dataset_path = MEDIA_ROOT+"/{}/original_data"
+gt_dataset_path = MEDIA_ROOT+"/{}/gt_data"
+ac = 0
 
-media_folder = sett.MEDIA_ROOT
-config_path = sett.CONFIG_ROOT
+media_folder = MEDIA_ROOT
+config_path = CONFIG_ROOT
+
+epoch_, train_discriminator_loss_meter_,train_generator_loss_meter_, train_pixel_loss_, train_adversarial_loss_meter_, pixAcc_ = 0,0,0,0,0,0
+
 
 # create a folder in the given path
 def createFolder(directory):
@@ -30,11 +45,10 @@ def createFolder(directory):
         logging.info('ERROR: Directory Exist. ' + directory)
 
 def index(request):
-    print("index load")
+
     context = {}
     global setting_obj
-    
-    print(request.method)
+   
 
     if request.method == 'POST':
         # get dataset name to create a folder to save data
@@ -130,11 +144,10 @@ def index(request):
 
 def search(request):
     html_template = loader.get_template('search.html')
-    print("Load Search")
     context = {}
     context["dataset_list"] = dataset_list
-
     return HttpResponse(html_template.render(context, request))
+
 
 def train(request):
     print("Load train")
@@ -177,7 +190,44 @@ def train(request):
 
         print(geno)
 
+        # shedular()
+
+
     html_template = loader.get_template('train.html')
     return HttpResponse(html_template.render(context, request))
-    
 
+def loadChart(request):
+
+    context = {}
+    x = [-2,randrange(4),randrange(5),6,7]
+    y = [q**2-q+3 for q in x]
+    trace1 = go.Scatter(x=x, y=y, marker={'color': 'red', 'symbol': 104, 'size': 10},
+                        mode="lines",  name='1st Trace')
+
+    data=go.Data([trace1])
+    layout=go.Layout(title="Meine Daten", xaxis={'title':'x1'}, yaxis={'title':'x2'})
+    figure=go.Figure(data=data,layout=layout)
+    div = opy.plot(figure, auto_open=False, output_type='div')
+    context['graph'] = div
+
+    html_template = loader.get_template('live-chart.html')
+    return HttpResponse(html_template.render(context, request))
+     
+ 
+
+class reciver:
+    
+    def call(self, epoch, train_discriminator_loss_meter,
+                        train_generator_loss_meter,
+                        train_pixel_loss,
+                        train_adversarial_loss_meter,
+                        pixAcc,
+                        mIoU):
+        epoch_ = epoch
+        train_discriminator_loss_meter_ = train_discriminator_loss_meter
+        train_generator_loss_meter_ = train_generator_loss_meter
+        train_pixel_loss_  = train_pixel_loss
+        train_adversarial_loss_meter_ = train_adversarial_loss_meter
+        pixAcc_ = pixAcc
+
+        print("#################", epoch, train_discriminator_loss_meter,train_generator_loss_meter, train_pixel_loss, train_adversarial_loss_meter, pixAcc)

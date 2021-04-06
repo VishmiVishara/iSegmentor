@@ -72,8 +72,9 @@
         </div>
 
         <hr class="my-4" />
-
-    
+        <div id="chart-live" style="width: 30vw; height: 30vh; background-color: violet;">
+         
+        </div>
       </form>
     </div>
   </div>
@@ -82,4 +83,35 @@
 {% endblock content %}
 
 <!-- Specific JS goes HERE -->
-{% block javascripts %}{% endblock javascripts %}
+{% block javascripts %}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        // catch the form's submit event
+
+        var i = setInterval( function(){
+
+          console.log("timmer call")
+          $.ajax({
+                data: $(this).serialize(), // get the form data
+                url: "{% url 'live' %}",
+                // on success
+                success: function (response) {
+                    
+                     $("#chart-live").html(response)
+                },
+                // on error
+                error: function (response) {
+                    // alert the error if any error occured
+                    console.log(response.responseJSON.errors)
+                }
+            });
+
+        }, 1000 * 5) //five second 
+        
+    })
+</script>
+
+{% endblock javascripts %}

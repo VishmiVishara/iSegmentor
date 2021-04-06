@@ -22,6 +22,8 @@ from util.utils import *
 from models.load import get_segmentation_model
 from models.discriminator import *
 import models.geno_searched as geno_types
+
+from listener import AB
 from tensorboardX import SummaryWriter
 
 # for ignoring warnings
@@ -31,6 +33,8 @@ warnings.filterwarnings("ignore")
 
 
 class Network(object):
+    
+    listner = AB()
 
     def __init__(self):
         self._init_configure()
@@ -419,10 +423,20 @@ class Network(object):
                     )
                 )
 
+                self.listner.call(  self.epoch, self.train_discriminator_loss_meter.mloss,
+                self.train_generator_loss_meter.mloss,
+                self.train_pixel_loss.mloss,
+                self.train_adversarial_loss_meter.mloss,
+                pixAcc,
+                mIoU)
+
         # save in tensorboard scalars
         self.writer.add_scalar('Train_Generator/loss', self.train_generator_loss_meter.mloss, self.epoch)
         self.writer.add_scalar('Train_adversarial/loss', self.train_adversarial_loss_meter.mloss, self.epoch)
         self.writer.add_scalar('Train_Pixel/loss', self.train_pixel_loss.mloss, self.epoch)
+
+        return self.train_generator_loss_meter.mloss, self.train_adversarial_loss_meter.mloss, 
+        self.train_pixel_loss.mloss, self.epoch,  pixAcc, mIoU,
 
     def val(self):
         self.generator.eval()

@@ -23,5 +23,6 @@ scipy
 scikit-image
 adabound
 tensorboardX
+schedule
 
 
