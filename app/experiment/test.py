@@ -10,7 +10,7 @@ import torch.backends.cudnn as cudnn
 sys.path.append('..')
 from data import create_dataset
 from util.utils import *
-from models import get_segmentation_model
+from models.load import get_segmentation_model
 from util.metrics import *
 from PIL import Image
 from torch.autograd import Variable
@@ -18,7 +18,7 @@ from models.discriminator import *
 import models.geno_searched as geno_types
 from options.test_options import TestOptions
 
-
+c = 0
 class TestNetwork(object):
     def __init__(self):
         self._init_configure()

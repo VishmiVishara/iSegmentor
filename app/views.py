@@ -1,6 +1,7 @@
 import json
 import os
 import yaml
+import sys
 from django.contrib.auth.decorators import login_required
 from django.core.files.storage import FileSystemStorage
 from django.shortcuts import render, get_object_or_404, redirect
@@ -15,7 +16,9 @@ from pathlib import Path
 from genotype import Genotype
 import plotly.offline as opy
 import plotly.graph_objs as go
-from random import randrange
+from experiment import n_train
+from options.train_options import TrainOptions
+#import train
 
 BASE_DIR = Path(__file__).parent
 CORE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -28,12 +31,12 @@ dataset_list = ["CityScapes", "PASCAL VOC 2012" ]
 original_dataset_path = MEDIA_ROOT+"/{}/original_data"
 gt_dataset_path = MEDIA_ROOT+"/{}/gt_data"
 ac = 0
+value = [0]
 
 media_folder = MEDIA_ROOT
 config_path = CONFIG_ROOT
 
 epoch_, train_discriminator_loss_meter_,train_generator_loss_meter_, train_pixel_loss_, train_adversarial_loss_meter_, pixAcc_ = 0,0,0,0,0,0
-
 
 # create a folder in the given path
 def createFolder(directory):
@@ -153,7 +156,11 @@ def train(request):
     print("Load train")
     context = {}
     context["dataset_list"] = dataset_list
-
+   
+    # train_network = Network()
+    # train_network.run()
+    n_train.main()
+    
     with open("geno.json") as json_out:
         data = json.load(json_out)
         #print(data["NAS_UNET_V2_En"]["down"])
@@ -199,16 +206,22 @@ def train(request):
 def loadChart(request):
 
     context = {}
-    x = [-2,randrange(4),randrange(5),6,7]
+    global value, localStorage
+    global epoch_, train_discriminator_loss_meter_,train_generator_loss_meter_, train_pixel_loss_, train_adversarial_loss_meter_, pixAcc_
+    value.append(value[len(value) - 1] + 2)
+    x = value
     y = [q**2-q+3 for q in x]
     trace1 = go.Scatter(x=x, y=y, marker={'color': 'red', 'symbol': 104, 'size': 10},
                         mode="lines",  name='1st Trace')
 
+    print(epoch_)
     data=go.Data([trace1])
     layout=go.Layout(title="Meine Daten", xaxis={'title':'x1'}, yaxis={'title':'x2'})
     figure=go.Figure(data=data,layout=layout)
     div = opy.plot(figure, auto_open=False, output_type='div')
     context['graph'] = div
+
+    print("epoch_", epoch_)
 
     html_template = loader.get_template('live-chart.html')
     return HttpResponse(html_template.render(context, request))
@@ -216,8 +229,11 @@ def loadChart(request):
  
 
 class reciver:
-    
-    def call(self, epoch, train_discriminator_loss_meter,
+   # global epoch_, train_discriminator_loss_meter_,train_generator_loss_meter_, train_pixel_loss_, train_adversarial_loss_meter_, pixAcc_
+    epoch_, train_discriminator_loss_meter_,train_generator_loss_meter_, train_pixel_loss_, train_adversarial_loss_meter_, pixAcc_ = 0,0,0,0,0,0
+
+    @staticmethod
+    def call(epoch, train_discriminator_loss_meter,
                         train_generator_loss_meter,
                         train_pixel_loss,
                         train_adversarial_loss_meter,
@@ -231,3 +247,7 @@ class reciver:
         pixAcc_ = pixAcc
 
         print("#################", epoch, train_discriminator_loss_meter,train_generator_loss_meter, train_pixel_loss, train_adversarial_loss_meter, pixAcc)
+    
+    @staticmethod
+    def values():  
+        print("******************",  epoch_)

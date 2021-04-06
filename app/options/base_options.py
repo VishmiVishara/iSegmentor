@@ -17,7 +17,7 @@ class BaseOptions():
     def initialize(self, parser):
         """Define the common options that are used in both training and test."""
         # Add default argument
-        parser.add_argument('--config', nargs='?', type=str, default='../configs/nas_unet/cityscapes.yml',
+        parser.add_argument('--config', nargs='?', type=str, default='../configs/cityscapes.yml',
                             help='Configuration file to use')
 
         # basic parameters

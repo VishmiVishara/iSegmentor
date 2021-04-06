@@ -23,9 +23,8 @@ from models.load import get_segmentation_model
 from models.discriminator import *
 import models.geno_searched as geno_types
 
-# from views import reciver
-# import views
-# import views
+cb = 0
+
 from tensorboardX import SummaryWriter
 
 # for ignoring warnings
@@ -548,7 +547,10 @@ class Network(object):
         self.best_adv_loss = cur_adv_loss if self.best_adv_loss > cur_adv_loss else self.best_adv_loss
         self.best_mIoU = mIoU if self.best_mIoU < mIoU else self.best_mIoU
 
-
-if __name__ == '__main__':
+def main():
+    print("call main")
     train_network = Network()
     train_network.run()
+
+if __name__ == '__main__':
+    main()
