@@ -33,7 +33,7 @@ import warnings
 
 warnings.filterwarnings("ignore")
 
-epoch, train_discriminator_loss_meter, train_generator_loss_meter, train_pixel_loss, train_adversarial_loss_meter, pixAcc = 0,0,0,0,0,0
+epoch, train_discriminator_loss_meter, train_generator_loss_meter, train_pixel_loss, train_adversarial_loss_meter, pixAcc_, mIoU_ = 0,0,0,0,0,0,0
 check = 0
 
 class Network(object):
@@ -427,13 +427,16 @@ class Network(object):
                     )
                 )
                 
-                # views.epoch_ = 300
-                # reciver.call(  self.epoch, self.train_discriminator_loss_meter.mloss,
-                # self.train_generator_loss_meter.mloss,
-                # self.train_pixel_loss.mloss,
-                # self.train_adversarial_loss_meter.mloss,
-                # pixAcc,
-                # mIoU)
+              
+                epoch = self.epoch 
+                train_discriminator_loss_meter = self.train_discriminator_loss_meter.mloss
+                train_generator_loss_meter =  self.train_generator_loss_meter.mloss
+                train_pixel_loss = self.train_pixel_loss.mloss
+                train_adversarial_loss_meter = self.train_adversarial_loss_meter.mloss
+                pixAcc_ = pixAcc
+                mIoU_ = mIoU
+
+                print("UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU",epoch, train_discriminator_loss_meter, train_generator_loss_meter, train_pixel_loss, train_adversarial_loss_meter, pixAcc_, mIoU_)
 
         # save in tensorboard scalars
         self.writer.add_scalar('Train_Generator/loss', self.train_generator_loss_meter.mloss, self.epoch)

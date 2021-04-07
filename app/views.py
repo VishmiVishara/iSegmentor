@@ -29,7 +29,7 @@ MEDIA_ROOT = os.path.join(CORE_DIR, 'media')
 CONFIG_ROOT = os.path.join(BASE_DIR, 'configs')
 
 setting_obj = ""
-dataset_list = ["CityScapes", "PASCAL VOC 2012" ]
+dataset_list = ["CityScapes", "PASCAL VOC 2012"]
 original_dataset_path = MEDIA_ROOT+"/{}/original_data"
 gt_dataset_path = MEDIA_ROOT+"/{}/gt_data"
 ac = 0
@@ -39,7 +39,8 @@ y_value = [0.0]
 media_folder = MEDIA_ROOT
 config_path = CONFIG_ROOT
 
-epoch, train_discriminator_loss_meter, train_generator_loss_meter, train_pixel_loss, train_adversarial_loss_meter, pixAcc = 0,0,0,0,0,0
+epoch, train_discriminator_loss_meter, train_generator_loss_meter, train_pixel_loss, train_adversarial_loss_meter, pixAcc = 0, 0, 0, 0, 0, 0
+
 
 # create a folder in the given path
 def createFolder(directory):
@@ -50,11 +51,11 @@ def createFolder(directory):
         print('ERROR: Directory Exist', str(e))
         logging.info('ERROR: Directory Exist. ' + directory)
 
+
 def index(request):
 
     context = {}
     global setting_obj
-   
 
     if request.method == 'POST':
         # get dataset name to create a folder to save data
@@ -65,7 +66,7 @@ def index(request):
             fs = FileSystemStorage()
 
             original_data_path = os.path.join(
-            original_dataset_path.format(datasetName))
+                original_dataset_path.format(datasetName))
             # create a folder for original images
             createFolder(original_data_path)
 
@@ -78,17 +79,16 @@ def index(request):
 
             # save original image dataset file
             originalImage_filename = fs.save(
-            original_data_path + r"/" + originalImage.name, originalImage)
+                original_data_path + r"/" + originalImage.name, originalImage)
             original_uploaded_file_url = fs.url(originalImage_filename)
 
             # save GT umage dataset file
             GTImage_filename = fs.save(
-            gt_data_path + r"/" + gtImage.name, gtImage)
+                gt_data_path + r"/" + gtImage.name, gtImage)
             gt_uploaded_file_url = fs.url(GTImage_filename)
 
             dataset_list.append(datasetName)
             print(dataset_list)
-
 
     if request.method == 'GET':
         # get dataset name to create a folder to save data
@@ -126,10 +126,10 @@ def index(request):
             save_config['training']['model_optimizer'] = model_optimizer
             save_config['training']['loss'] = t_loss
 
-            filename = config_path + "/"+ datasetName + ".yml"
+            filename = config_path + "/" + datasetName + ".yml"
             with open(filename, 'w') as f:
                 yaml.dump(save_config, f, allow_unicode=True)
-                
+
         elif request.GET.get('tabs-icons-text-2-tab', True):
             # read default config file
             with open(config_path + r"/nas_unet_voc.yml", 'r') as yaml_in, open("voc.json", "w") as json_out:
@@ -140,13 +140,13 @@ def index(request):
             # create a json using default config
             with open('voc.json') as f:
                 data = json.load(f)
-                #print(data["model"])
+                # print(data["model"])
                 setting_obj = data
                 # save default config to the context
                 context['config'] = data
-                print(context['config'])
 
     return render(request, 'index.html', context)
+
 
 def search(request):
     html_template = loader.get_template('search.html')
@@ -160,13 +160,6 @@ def train(request):
     context = {}
     context["dataset_list"] = dataset_list
 
- 
-    if request.method == 'GET':
-        if 'btn-train' in request.GET:
-            sys.argv =[ "hello"]
-            n_train.main()
-
-    
     with open("geno.json") as json_out:
         data = json.load(json_out)
         architecture_list = []
@@ -181,31 +174,38 @@ def train(request):
         up_range = []
 
         for obj in data["NAS_UNET_V2_En"]["down"]:
-            for key,value in obj.items():
-                list_down_tuples.append((key,value))
-        
+            for key, value in obj.items():
+                list_down_tuples.append((key, value))
+
         for obj in data["NAS_UNET_V2_En"]["up"]:
-            for key,value in obj.items():
-                list_up_tuples.append((key,value))
-            
-        down_range = range(data["NAS_UNET_V2_En"]['down_concat'][0], data["NAS_UNET_V2_En"]['down_concat'][1])
-        up_range   = range(data["NAS_UNET_V2_En"]['up_concat'][0], data["NAS_UNET_V2_En"]['up_concat'][1])
+            for key, value in obj.items():
+                list_up_tuples.append((key, value))
 
-        print(down_range)
-        print(up_range)
+        down_range = range(data["NAS_UNET_V2_En"]['down_concat']
+                           [0], data["NAS_UNET_V2_En"]['down_concat'][1])
+        up_range = range(data["NAS_UNET_V2_En"]['up_concat']
+                         [0], data["NAS_UNET_V2_En"]['up_concat'][1])
 
-        print(list_down_tuples)
-        print(list_up_tuples)
+        # print(down_range)
+        # print(up_range)
 
-        geno = Genotype(down=list_down_tuples, down_concat=down_range, up=list_up_tuples, up_concat=up_range)
+        # print(list_down_tuples)
+        # print(list_up_tuples)
 
-        print(geno)
+        geno = Genotype(down=list_down_tuples, down_concat=down_range,
+                        up=list_up_tuples, up_concat=up_range)
 
-        # shedular()
+        # print(geno)
 
+        if request.method == 'POST':
+            if request.POST.get('btn-train-init', True):
+                sys.argv = ["hello"]
+                n_train.main()
 
-    html_template = loader.get_template('train.html')
-    return HttpResponse(html_template.render(context, request))
+            else:
+                print(request.POST)
+        return render(request, 'train.html', context)
+
 
 def loadChart(request):
 
@@ -216,37 +216,40 @@ def loadChart(request):
     epoch = n_train.epoch
     train_discriminator_loss_meter = n_train.train_discriminator_loss_meter
     train_generator_loss_meter = n_train.train_generator_loss_meter
-    train_pixel_loss  = n_train.train_pixel_loss
+    train_pixel_loss = n_train.train_pixel_loss
     train_adversarial_loss_meter = n_train.train_adversarial_loss_meter
-    pixAcc = n_train.pixAcc
+    pixAcc = n_train.pixAcc_
+    mIoU = n_train.mIoU_
 
     print(x_value)
     print(y_value)
-    # x_value.append(epoch)
-    # y_value.append(train_generator_loss_meter)
+    x_value.append(epoch)
+    y_value.append(train_generator_loss_meter)
+
     x = x_value
     y = y_value
     trace1 = go.Scatter(x=x, y=y, marker={'color': 'red', 'symbol': 104, 'size': 10},
                         mode="lines",  name='1st Trace')
 
+    print(x_value)
+    print(y_value)
+
     print(epoch)
-    print( n_train.epoch)
+    print(n_train.epoch)
     print(train_generator_loss_meter)
-    data=go.Data([trace1])
-    layout=go.Layout(title="Meine Daten", xaxis={'title':'x1'}, yaxis={'title':'x2'})
-    figure=go.Figure(data=data,layout=layout)
+    data = go.Data([trace1])
+    layout = go.Layout(title="Meine Daten", xaxis={
+                       'title': 'x1'}, yaxis={'title': 'x2'})
+    figure = go.Figure(data=data, layout=layout)
     div = opy.plot(figure, auto_open=False, output_type='div')
     context['graph'] = div
 
-   # print("epoch_", epoch_)
-
     html_template = loader.get_template('live-chart.html')
     return HttpResponse(html_template.render(context, request))
-     
- 
+
 
 # class reciver:
-#    # global epoch_, train_discriminator_loss_meter_,train_generator_loss_meter_, train_pixel_loss_, train_adversarial_loss_meter_, pixAcc_
+#     global epoch_, train_discriminator_loss_meter_,train_generator_loss_meter_, train_pixel_loss_, train_adversarial_loss_meter_, pixAcc_
 #     epoch_, train_discriminator_loss_meter_,train_generator_loss_meter_, train_pixel_loss_, train_adversarial_loss_meter_, pixAcc_ = 0,0,0,0,0,0
 
 #     @staticmethod
@@ -264,7 +267,7 @@ def loadChart(request):
 #         pixAcc_ = pixAcc
 
 #         print("#################", epoch, train_discriminator_loss_meter,train_generator_loss_meter, train_pixel_loss, train_adversarial_loss_meter, pixAcc)
-    
+
 #     @staticmethod
-#     def values():  
+#     def values():
 #         print("******************",  epoch_)

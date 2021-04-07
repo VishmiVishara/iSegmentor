@@ -61,17 +61,21 @@
               </div>
             </div>
             <div class="col-sm" style="display: flex; justify-content: center;  vertical-align: middle;">
-              <button name="btn-train" type="button" class="btn btn-default">Train Model</button>
-            </div>
-          </div>
-
-          <hr class="my-4" />
-          <div id="chart-live" style="width: 30vw; height: 60vh; background-color: violet;">
-
-          </div>
+              <form method="GET"></form>
+              {% csrf_token %}
+              <button type="submit" name="btn-train_init" id="btn-train_init" class="btn btn-default">Train
+                Model</button>
       </form>
     </div>
   </div>
+
+  <hr class="my-4" />
+  <div id="chart-live" style="width: 30vw; height: 60vh; background-color: violet;">
+
+  </div>
+  </form>
+</div>
+</div>
 </div>
 
 {% endblock content %}
@@ -103,7 +107,7 @@
         }
       });
 
-    }, 1000 * 5) //five second 
+    }, 1000 * 5) //ten second 
 
   })
 </script>
