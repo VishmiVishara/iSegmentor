@@ -436,7 +436,7 @@ class Network(object):
                 pixAcc_ = pixAcc
                 mIoU_ = mIoU
 
-                print("UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU",epoch, train_discriminator_loss_meter, train_generator_loss_meter, train_pixel_loss, train_adversarial_loss_meter, pixAcc_, mIoU_)
+                # print("UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU",epoch, train_discriminator_loss_meter, train_generator_loss_meter, train_pixel_loss, train_adversarial_loss_meter, pixAcc_, mIoU_)
 
         # save in tensorboard scalars
         self.writer.add_scalar('Train_Generator/loss', self.train_generator_loss_meter.mloss, self.epoch)

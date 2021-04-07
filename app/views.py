@@ -33,8 +33,8 @@ dataset_list = ["CityScapes", "PASCAL VOC 2012"]
 original_dataset_path = MEDIA_ROOT+"/{}/original_data"
 gt_dataset_path = MEDIA_ROOT+"/{}/gt_data"
 ac = 0
-x_value = [0.0]
-y_value = [0.0]
+x_value = []
+y_value = []
 
 media_folder = MEDIA_ROOT
 config_path = CONFIG_ROOT
@@ -223,26 +223,24 @@ def loadChart(request):
 
     print(x_value)
     print(y_value)
-    x_value.append(epoch)
-    y_value.append(train_generator_loss_meter)
+    if train_generator_loss_meter > 0.0 :
+        x_value.append(epoch)
+        y_value.append(train_generator_loss_meter)
 
-    x = x_value
-    y = y_value
-    trace1 = go.Scatter(x=x, y=y, marker={'color': 'red', 'symbol': 104, 'size': 10},
-                        mode="lines",  name='1st Trace')
+        x = x_value
+        y = y_value
+        trace1 = go.Scatter(x=x, y=y, marker={'color': 'red', 'symbol': 104, 'size': 10},
+                            mode="lines",  name='1st Trace')
 
-    print(x_value)
-    print(y_value)
+        print(x_value)
+        print(y_value)
 
-    print(epoch)
-    print(n_train.epoch)
-    print(train_generator_loss_meter)
-    data = go.Data([trace1])
-    layout = go.Layout(title="Meine Daten", xaxis={
-                       'title': 'x1'}, yaxis={'title': 'x2'})
-    figure = go.Figure(data=data, layout=layout)
-    div = opy.plot(figure, auto_open=False, output_type='div')
-    context['graph'] = div
+        data = go.Data([trace1])
+        layout = go.Layout(title="Meine Daten", xaxis={
+                        'title': 'x1'}, yaxis={'title': 'x2'})
+        figure = go.Figure(data=data, layout=layout)
+        div = opy.plot(figure, auto_open=False, output_type='div')
+        context['graph'] = div
 
     html_template = loader.get_template('live-chart.html')
     return HttpResponse(html_template.render(context, request))
