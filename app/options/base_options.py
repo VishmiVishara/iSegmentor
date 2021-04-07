@@ -17,12 +17,12 @@ class BaseOptions():
     def initialize(self, parser):
         """Define the common options that are used in both training and test."""
         # Add default argument
-        parser.add_argument('--config', nargs='?', type=str, default='../configs/cityscapes.yml',
+        parser.add_argument('--config', nargs='?', type=str, default=r'./app/configs/cityscapes.yml',
                             help='Configuration file to use')
 
         # basic parameters
 
-        parser.add_argument('--dataroot', type=str, default='../datasets/cityscapes', help='path to images (should have subfolders trainA, trainB, valA, valB, etc)')
+        parser.add_argument('--dataroot', type=str, default=r'./app/datasets/cityscapes', help='path to images (should have subfolders trainA, trainB, valA, valB, etc)')
         parser.add_argument('--name', type=str, default='experiment_name', help='name of the experiment. It decides where to store samples and models')
         parser.add_argument('--checkpoints_dir', type=str, default='./checkpoints', help='models are saved here')
         # model parameters

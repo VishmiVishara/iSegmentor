@@ -9,7 +9,7 @@ import torch.nn as nn
 from torch.utils import data
 import torch.backends.cudnn as cudnn
 
-sys.path.append('..')
+# sys.path.append('..')
 from options.train_options import TrainOptions
 from data import create_dataset
 from util.utils import get_logger, save_checkpoint, calc_time
@@ -33,6 +33,7 @@ import warnings
 
 warnings.filterwarnings("ignore")
 
+epoch, train_discriminator_loss_meter, train_generator_loss_meter, train_pixel_loss, train_adversarial_loss_meter, pixAcc = 0,0,0,0,0,0
 check = 0
 
 class Network(object):
@@ -54,7 +55,7 @@ class Network(object):
             self.cfg = yaml.load(fp)
             print('load configure file at {}'.format(self.args.config))
         self.model_name = self.args.model
-        print('Usage model :{}'.format(self.model_name))
+        # print('Usage model :{}'.format(self.model_name))
 
     def _init_logger(self):
         log_dir = '../logs/' + self.model_name + '/train' + '/{}'.format(self.cfg['data']['dataset']) \
@@ -351,6 +352,7 @@ class Network(object):
         self.loss_G.backward()
 
     def train(self):
+        global train_generator_loss_meter, train_adversarial_loss_meter, train_pixel_loss, epoch,  pixAcc, mIoU
 
         self.generator.train()
         self.discriminator.train()

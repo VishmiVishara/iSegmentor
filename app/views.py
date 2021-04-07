@@ -17,7 +17,9 @@ from genotype import Genotype
 import plotly.offline as opy
 import plotly.graph_objs as go
 from experiment import n_train
-from options.train_options import TrainOptions
+import sys
+# sys.path.append('..')
+# from options.train_options import TrainOptions
 #import train
 
 BASE_DIR = Path(__file__).parent
@@ -31,12 +33,13 @@ dataset_list = ["CityScapes", "PASCAL VOC 2012" ]
 original_dataset_path = MEDIA_ROOT+"/{}/original_data"
 gt_dataset_path = MEDIA_ROOT+"/{}/gt_data"
 ac = 0
-value = [0]
+x_value = [0.0]
+y_value = [0.0]
 
 media_folder = MEDIA_ROOT
 config_path = CONFIG_ROOT
 
-epoch_, train_discriminator_loss_meter_,train_generator_loss_meter_, train_pixel_loss_, train_adversarial_loss_meter_, pixAcc_ = 0,0,0,0,0,0
+epoch, train_discriminator_loss_meter, train_generator_loss_meter, train_pixel_loss, train_adversarial_loss_meter, pixAcc = 0,0,0,0,0,0
 
 # create a folder in the given path
 def createFolder(directory):
@@ -156,15 +159,16 @@ def train(request):
     print("Load train")
     context = {}
     context["dataset_list"] = dataset_list
-   
-    # train_network = Network()
-    # train_network.run()
-    n_train.main()
+
+ 
+    if request.method == 'GET':
+        if 'btn-train' in request.GET:
+            sys.argv =[ "hello"]
+            n_train.main()
+
     
     with open("geno.json") as json_out:
         data = json.load(json_out)
-        #print(data["NAS_UNET_V2_En"]["down"])
-
         architecture_list = []
         architecture_list = data.keys()
         list(architecture_list)
@@ -206,48 +210,61 @@ def train(request):
 def loadChart(request):
 
     context = {}
-    global value, localStorage
-    global epoch_, train_discriminator_loss_meter_,train_generator_loss_meter_, train_pixel_loss_, train_adversarial_loss_meter_, pixAcc_
-    value.append(value[len(value) - 1] + 2)
-    x = value
-    y = [q**2-q+3 for q in x]
+    global x_value, y_value
+    global epoch, train_discriminator_loss_meter, train_generator_loss_meter, train_pixel_loss, train_adversarial_loss_meter, pixAcc
+
+    epoch = n_train.epoch
+    train_discriminator_loss_meter = n_train.train_discriminator_loss_meter
+    train_generator_loss_meter = n_train.train_generator_loss_meter
+    train_pixel_loss  = n_train.train_pixel_loss
+    train_adversarial_loss_meter = n_train.train_adversarial_loss_meter
+    pixAcc = n_train.pixAcc
+
+    print(x_value)
+    print(y_value)
+    # x_value.append(epoch)
+    # y_value.append(train_generator_loss_meter)
+    x = x_value
+    y = y_value
     trace1 = go.Scatter(x=x, y=y, marker={'color': 'red', 'symbol': 104, 'size': 10},
                         mode="lines",  name='1st Trace')
 
-    print(epoch_)
+    print(epoch)
+    print( n_train.epoch)
+    print(train_generator_loss_meter)
     data=go.Data([trace1])
     layout=go.Layout(title="Meine Daten", xaxis={'title':'x1'}, yaxis={'title':'x2'})
     figure=go.Figure(data=data,layout=layout)
     div = opy.plot(figure, auto_open=False, output_type='div')
     context['graph'] = div
 
-    print("epoch_", epoch_)
+   # print("epoch_", epoch_)
 
     html_template = loader.get_template('live-chart.html')
     return HttpResponse(html_template.render(context, request))
      
  
 
-class reciver:
-   # global epoch_, train_discriminator_loss_meter_,train_generator_loss_meter_, train_pixel_loss_, train_adversarial_loss_meter_, pixAcc_
-    epoch_, train_discriminator_loss_meter_,train_generator_loss_meter_, train_pixel_loss_, train_adversarial_loss_meter_, pixAcc_ = 0,0,0,0,0,0
+# class reciver:
+#    # global epoch_, train_discriminator_loss_meter_,train_generator_loss_meter_, train_pixel_loss_, train_adversarial_loss_meter_, pixAcc_
+#     epoch_, train_discriminator_loss_meter_,train_generator_loss_meter_, train_pixel_loss_, train_adversarial_loss_meter_, pixAcc_ = 0,0,0,0,0,0
 
-    @staticmethod
-    def call(epoch, train_discriminator_loss_meter,
-                        train_generator_loss_meter,
-                        train_pixel_loss,
-                        train_adversarial_loss_meter,
-                        pixAcc,
-                        mIoU):
-        epoch_ = epoch
-        train_discriminator_loss_meter_ = train_discriminator_loss_meter
-        train_generator_loss_meter_ = train_generator_loss_meter
-        train_pixel_loss_  = train_pixel_loss
-        train_adversarial_loss_meter_ = train_adversarial_loss_meter
-        pixAcc_ = pixAcc
+#     @staticmethod
+#     def call(epoch, train_discriminator_loss_meter,
+#                         train_generator_loss_meter,
+#                         train_pixel_loss,
+#                         train_adversarial_loss_meter,
+#                         pixAcc,
+#                         mIoU):
+#         epoch_ = epoch
+#         train_discriminator_loss_meter_ = train_discriminator_loss_meter
+#         train_generator_loss_meter_ = train_generator_loss_meter
+#         train_pixel_loss_  = train_pixel_loss
+#         train_adversarial_loss_meter_ = train_adversarial_loss_meter
+#         pixAcc_ = pixAcc
 
-        print("#################", epoch, train_discriminator_loss_meter,train_generator_loss_meter, train_pixel_loss, train_adversarial_loss_meter, pixAcc)
+#         print("#################", epoch, train_discriminator_loss_meter,train_generator_loss_meter, train_pixel_loss, train_adversarial_loss_meter, pixAcc)
     
-    @staticmethod
-    def values():  
-        print("******************",  epoch_)
+#     @staticmethod
+#     def values():  
+#         print("******************",  epoch_)
