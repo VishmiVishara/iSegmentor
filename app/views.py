@@ -236,7 +236,7 @@ def loadChart(request):
         print(y_value)
 
         data = go.Data([trace1])
-        layout = go.Layout(title="Meine Daten", xaxis={
+        layout = go.Layout(title="Epoch vs Generator Loss", xaxis={
                         'title': 'x1'}, yaxis={'title': 'x2'})
         figure = go.Figure(data=data, layout=layout)
         div = opy.plot(figure, auto_open=False, output_type='div')
