@@ -4,6 +4,8 @@ import yaml
 import time
 import argparse
 
+import time
+
 from tqdm import tqdm
 import torch.backends.cudnn as cudnn
 
@@ -19,6 +21,7 @@ import models.geno_searched as geno_types
 from options.test_options import TestOptions
 
 c = 0
+pixel_acc, miou, total_time = 0,0,0
 class TestNetwork(object):
     def __init__(self):
         self._init_configure()
@@ -128,8 +131,10 @@ class TestNetwork(object):
         save_image(image_numpy, img_path)
 
     def test(self, img_queue, split='val'):
+        global total_time
+        global pixel_acc, miou
         self.model.eval()
-        report_freq =30
+        report_freq =1
         tbar = tqdm(img_queue)
         create_exp_dir(self.save_image_path, desc='=>Save prediction image on')
         with torch.no_grad():
@@ -139,7 +144,11 @@ class TestNetwork(object):
                 self.real_A = data['A' if AtoB else 'B'].to(self.device)
                 self.real_B = data['B' if AtoB else 'A'].to(self.device)
 
+
+                start_time = time.time()
                 fake_B = self.model(self.real_A)
+                time_taken = time.time() - start_time
+                total_time = total_time + time_taken
 
                 # save image
                 if step % report_freq == 0:
@@ -158,6 +167,9 @@ class TestNetwork(object):
                     tbar.set_description('loss: %.6f, pixAcc: %.3f, mIoU: %.6f'
                                          % (self.loss_meter.mloss, pixAcc, mIoU))
 
+                    pixel_acc= pixAcc
+                    miou = mIoU
+            
     def run(self):
         self.logger.info('args = %s', self.cfg)
         # Setup Metrics
@@ -176,9 +188,14 @@ class TestNetwork(object):
         self.logger.info('Evaluation done!')
 
 
-if __name__  == '__main__':
+def main():
+    print("call main")
     testNetwork = TestNetwork()
     testNetwork.run()
+
+if __name__ == '__main__':
+    main()
+
 
 
 

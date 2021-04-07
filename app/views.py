@@ -17,10 +17,9 @@ from genotype import Genotype
 import plotly.offline as opy
 import plotly.graph_objs as go
 from experiment import n_train
+from experiment import test
 import sys
-# sys.path.append('..')
-# from options.train_options import TrainOptions
-#import train
+
 
 BASE_DIR = Path(__file__).parent
 CORE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -40,7 +39,7 @@ media_folder = MEDIA_ROOT
 config_path = CONFIG_ROOT
 
 epoch, train_discriminator_loss_meter, train_generator_loss_meter, train_pixel_loss, train_adversarial_loss_meter, pixAcc = 0, 0, 0, 0, 0, 0
-
+test_pic_acc, test_mIoU = 0, 0
 
 # create a folder in the given path
 def createFolder(directory):
@@ -201,9 +200,6 @@ def train(request):
             if request.POST.get('btn-train-init', True):
                 sys.argv = ["hello"]
                 n_train.main()
-
-            else:
-                print(request.POST)
         return render(request, 'train.html', context)
 
 
@@ -246,26 +242,21 @@ def loadChart(request):
     return HttpResponse(html_template.render(context, request))
 
 
-# class reciver:
-#     global epoch_, train_discriminator_loss_meter_,train_generator_loss_meter_, train_pixel_loss_, train_adversarial_loss_meter_, pixAcc_
-#     epoch_, train_discriminator_loss_meter_,train_generator_loss_meter_, train_pixel_loss_, train_adversarial_loss_meter_, pixAcc_ = 0,0,0,0,0,0
+def evaluate(request):
+    html_template = loader.get_template('evaluate.html')
+    context = {}
+    context["dataset_list"] = dataset_list
 
-#     @staticmethod
-#     def call(epoch, train_discriminator_loss_meter,
-#                         train_generator_loss_meter,
-#                         train_pixel_loss,
-#                         train_adversarial_loss_meter,
-#                         pixAcc,
-#                         mIoU):
-#         epoch_ = epoch
-#         train_discriminator_loss_meter_ = train_discriminator_loss_meter
-#         train_generator_loss_meter_ = train_generator_loss_meter
-#         train_pixel_loss_  = train_pixel_loss
-#         train_adversarial_loss_meter_ = train_adversarial_loss_meter
-#         pixAcc_ = pixAcc
+    if request.method == 'POST':
+        if 'btn-evaluat-init' in request.POST:
+            sys.argv = ["hello"]
+            test.main()
 
-#         print("#################", epoch, train_discriminator_loss_meter,train_generator_loss_meter, train_pixel_loss, train_adversarial_loss_meter, pixAcc)
+            test_mIoU = test.miou
+            test_pic_acc =  test.pixel_acc
 
-#     @staticmethod
-#     def values():
-#         print("******************",  epoch_)
+            print(test_mIoU)
+            print(test_pic_acc)
+            print(test.total_time / 500)
+
+    return HttpResponse(html_template.render(context, request))
