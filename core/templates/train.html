@@ -68,9 +68,9 @@
                 </form>
               </div>
               <div class="col-sm" style="display: flex; justify-content: center;  vertical-align: middle;">
-                <form method="GET">
+                <form method="POST">
                   {% csrf_token %}
-                  <button type="submit" name="btn-tensorboard" id="btn-tensorboard" class="btn btn-default">View Tensorboard
+                  <button type="submit" name="btn-tensorboard" id="btn-tensorboard" class="btn btn-default" onclick=" window.open('http://localhost:6006', '_blank'); return false;">View Tensorboard
                     </button>
                 </form>
               </div>

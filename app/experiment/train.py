@@ -390,6 +390,9 @@ class Network(object):
                 # save image
                 self.sample_images(self.real_A, self.real_B, self.fake_B, self.epoch, step, 'train')
 
+                grid_image = store_images(self.real_A, self.real_B, self.fake_B)
+                self.writer.add_image('train', grid_image, self.epoch)
+
                 self.logger.info(
                     "\r[Epoch %d/%d] [Batch %d/%d] [D loss: %.3f] [G loss: %f, pixel: %f, adv: %f] [pixAcc: %.3f, "
                     "mIoU %.6f] ETA: %s "
@@ -485,6 +488,10 @@ class Network(object):
                 if step % self.cfg['training']['report_freq'] == 0:
                     # save image
                     self.sample_images(real_A, real_B, fake_B, self.epoch, step, 'val')
+
+                    grid_image = store_images(real_A, real_B, fake_B)
+                    self.writer.add_image('Val', grid_image, self.epoch)
+
                     pixAcc, mIoU = self.metric_val.get()
                     self.logger.info(
                         "\r[Batch %d/%d] [Val D loss: %f] [Val G loss: %f, Val pixel: %f, Val adv: %f] "

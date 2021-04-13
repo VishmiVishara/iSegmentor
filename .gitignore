@@ -10,6 +10,8 @@ __pycache__/
 *.db
 *.sqlite3
 *.log
+.
+
 
 # venv
 env
@@ -29,3 +31,4 @@ app/datasets/cityscapes.zip
 app/datasets/cityscapes/
 
 app/logs
+.idea/

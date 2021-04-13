@@ -27,6 +27,7 @@ CORE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 MEDIA_ROOT = os.path.join(CORE_DIR, 'media')
 CONFIG_ROOT = os.path.join(BASE_DIR, 'configs')
+LOGS_ROOT = os.path.join(BASE_DIR, 'logs/')
 
 setting_obj = ""
 dataset_list = ["CityScapes", "PASCAL VOC 2012"]
@@ -201,16 +202,15 @@ def train(request):
         # print(geno)
 
         if request.method == 'POST':
+            #if 'btn-tensorboard' in request.POST:
+                
+    
             if request.POST.get('btn-train-init', True):
+                print("training starting.......")
                 sys.argv = ["hello"]
                 n_train.main()
-
-        if request.method == 'GET':
-            if request.GET.get('btn-tensorboard', True):
-                print("TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT")
                 t = threading.Thread(target=launchTensorBoard, args=([]))
                 t.start()
-
 
         return render(request, 'train.html', context)
 
@@ -313,6 +313,7 @@ def evaluate(request):
 
 
 def launchTensorBoard():
-    os.system('tensorboard --logdir=../logs/')
+    print(LOGS_ROOT)
+    os.system('tensorboard --logdir ' + 'app/logs/')
     return
 
