@@ -12,7 +12,6 @@ import schedule
 import time
 from pathlib import Path
 import json
-from pathlib import Path
 from genotype import Genotype
 import plotly.offline as opy
 import plotly.graph_objs as go
@@ -20,6 +19,7 @@ from experiment import n_train
 from experiment import test
 import threading
 import sys
+from alert_service import Alerter
 
 
 BASE_DIR = Path(__file__).parent
@@ -177,18 +177,18 @@ def train(request):
         down_range = []
         up_range = []
 
-        for obj in data["NAS_UNET_V2_En"]["down"]:
+        for obj in data["NAS_UNET_NEW_V3"]["down"]:
             for key, value in obj.items():
                 list_down_tuples.append((key, value))
 
-        for obj in data["NAS_UNET_V2_En"]["up"]:
+        for obj in data["NAS_UNET_NEW_V3"]["up"]:
             for key, value in obj.items():
                 list_up_tuples.append((key, value))
 
-        down_range = range(data["NAS_UNET_V2_En"]['down_concat']
-                           [0], data["NAS_UNET_V2_En"]['down_concat'][1])
-        up_range = range(data["NAS_UNET_V2_En"]['up_concat']
-                         [0], data["NAS_UNET_V2_En"]['up_concat'][1])
+        down_range = range(data["NAS_UNET_NEW_V3"]['down_concat']
+                           [0], data["NAS_UNET_NEW_V3"]['down_concat'][1])
+        up_range = range(data["NAS_UNET_NEW_V3"]['up_concat']
+                         [0], data["NAS_UNET_NEW_V3"]['up_concat'][1])
 
         # print(down_range)
         # print(up_range)
@@ -206,8 +206,15 @@ def train(request):
                 
             if request.POST.get('btn-train-init', True):
                 print("training starting.......")
-                sys.argv = ["hello"]
-                n_train.main()
+                # sys.argv = ["hello"]
+                # n_train.main()
+                alerter = Alerter()
+                alerter.send_emails("A New Model Training initiated on Cityscapes Dataset" +
+                "using Searched U-Net Architecture - \n\n" +  str(geno)
+                + "\n\n It will take few hours to complete." +
+                "We'll Update you once we are done with the Training!")
+
+                # open tensorboard in another thread
                 t = threading.Thread(target=launchTensorBoard, args=([]))
                 t.start()
 

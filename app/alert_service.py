@@ -11,9 +11,10 @@ from email.mime.multipart import MIMEMultipart
 import warnings
 from email.mime.text import MIMEText
 from io import StringIO 
+from pathlib import Path
 warnings.filterwarnings("ignore")
 
-home_dir = 'H:/FYP-django/iSegmentor/'
+BASE_DIR = Path(__file__).parent
 
 class Alerter:
 
@@ -23,9 +24,9 @@ class Alerter:
     def send_emails(self, html):
         #print("hi")
         self.email_config.read(
-            '{}/config_files/email_config.ini'.format(home_dir))
+            '{}/config_files/email_config.ini'.format(BASE_DIR))
         email_list = self.email_config.get('LIST', 'emails').strip().split(',')
-        #print(email_list)
+        print(email_list)
         COMMASPACE = ', '
 
         msg = MIMEMultipart()
