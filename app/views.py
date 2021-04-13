@@ -21,7 +21,6 @@ import threading
 import sys
 from alert_service import Alerter
 
-
 BASE_DIR = Path(__file__).parent
 CORE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -54,7 +53,6 @@ def createFolder(directory):
     except OSError as e:
         print('ERROR: Directory Exist', str(e))
         logging.info('ERROR: Directory Exist. ' + directory)
-
 
 def index(request):
 
@@ -151,13 +149,11 @@ def index(request):
 
     return render(request, 'index.html', context)
 
-
 def search(request):
     html_template = loader.get_template('search.html')
     context = {}
     context["dataset_list"] = dataset_list
     return HttpResponse(html_template.render(context, request))
-
 
 def train(request):
     print("Load train")
@@ -219,7 +215,6 @@ def train(request):
                 t.start()
 
         return render(request, 'train.html', context)
-
 
 def loadChart(request):
     context = {}
@@ -316,7 +311,6 @@ def evaluate(request):
             print(test.total_time / 500)
 
     return HttpResponse(html_template.render(context, request))
-
 
 def launchTensorBoard():
     print(LOGS_ROOT)
