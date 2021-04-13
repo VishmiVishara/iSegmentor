@@ -27,7 +27,7 @@ CORE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 MEDIA_ROOT = os.path.join(CORE_DIR, 'media')
 CONFIG_ROOT = os.path.join(BASE_DIR, 'configs')
-LOGS_ROOT = os.path.join(BASE_DIR, 'logs/')
+LOGS_ROOT = os.path.join(BASE_DIR, r'logs/')
 
 setting_obj = ""
 dataset_list = ["CityScapes", "PASCAL VOC 2012"]
@@ -204,7 +204,6 @@ def train(request):
         if request.method == 'POST':
             #if 'btn-tensorboard' in request.POST:
                 
-    
             if request.POST.get('btn-train-init', True):
                 print("training starting.......")
                 sys.argv = ["hello"]
