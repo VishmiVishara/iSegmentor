@@ -204,6 +204,14 @@ def train(request):
             if request.POST.get('btn-train-init', True):
                 sys.argv = ["hello"]
                 n_train.main()
+
+        if request.method == 'GET':
+            if request.GET.get('btn-tensorboard', True):
+                print("TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT")
+                t = threading.Thread(target=launchTensorBoard, args=([]))
+                t.start()
+
+
         return render(request, 'train.html', context)
 
 
@@ -220,7 +228,7 @@ def loadChart(request):
     pixAcc = n_train.pixAcc_
     mIoU = n_train.mIoU_
 
-    print("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB", train_discriminator_loss_meter)
+    #print("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB", train_discriminator_loss_meter)
 
     # print(x_value)
     # print(y_value)
@@ -245,8 +253,6 @@ def loadChart(request):
 
     html_template = loader.get_template('live-chart.html')
     return HttpResponse(html_template.render(context, request))
-
-    
 
 def loadChartDis(request):
 
@@ -286,7 +292,6 @@ def loadChartDis(request):
     html_template = loader.get_template('live-chart-dis.html')
     return HttpResponse(html_template.render(context, request))
 
-
 def evaluate(request):
     html_template = loader.get_template('evaluate.html')
     context = {}
@@ -311,5 +316,3 @@ def launchTensorBoard():
     os.system('tensorboard --logdir=../logs/')
     return
 
-t = threading.Thread(target=launchTensorBoard, args=([]))
-t.start()
