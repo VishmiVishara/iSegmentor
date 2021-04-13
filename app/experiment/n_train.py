@@ -33,7 +33,7 @@ import warnings
 
 warnings.filterwarnings("ignore")
 
-epoch, train_discriminator_loss_meter, train_generator_loss_meter, train_pixel_loss, train_adversarial_loss_meter, pixAcc_, mIoU_ = 0,0,0,0,0,0,0
+epoch, train_discriminator_loss_meter, train_generator_loss_meter, train_pixel_loss, train_adversarial_loss_meter, pixAcc_, mIoU_ = 0.0,0.0,0.0,0.0,0.0,0.0,0.0
 check = 0
 
 class Network(object):
@@ -352,7 +352,7 @@ class Network(object):
         self.loss_G.backward()
 
     def train(self):
-        global train_generator_loss_meter, train_adversarial_loss_meter, train_pixel_loss, epoch,  pixAcc, mIoU
+        global train_generator_loss_meter, train_discriminator_loss_meter, train_adversarial_loss_meter, train_pixel_loss, epoch,  pixAcc, mIoU
 
         self.generator.train()
         self.discriminator.train()
@@ -435,6 +435,8 @@ class Network(object):
                 train_adversarial_loss_meter = self.train_adversarial_loss_meter.mloss
                 pixAcc_ = pixAcc
                 mIoU_ = mIoU
+
+                #print("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH",train_discriminator_loss_meter)
 
                 # print("UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU",epoch, train_discriminator_loss_meter, train_generator_loss_meter, train_pixel_loss, train_adversarial_loss_meter, pixAcc_, mIoU_)
 

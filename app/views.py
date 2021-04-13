@@ -18,6 +18,7 @@ import plotly.offline as opy
 import plotly.graph_objs as go
 from experiment import n_train
 from experiment import test
+import threading
 import sys
 
 
@@ -35,10 +36,13 @@ ac = 0
 x_value = []
 y_value = []
 
+x_value_dis = []
+y_value_dis = []
+
 media_folder = MEDIA_ROOT
 config_path = CONFIG_ROOT
 
-epoch, train_discriminator_loss_meter, train_generator_loss_meter, train_pixel_loss, train_adversarial_loss_meter, pixAcc = 0, 0, 0, 0, 0, 0
+epoch, train_discriminator_loss_meter, train_generator_loss_meter, train_pixel_loss, train_adversarial_loss_meter, pixAcc = 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
 test_pic_acc, test_mIoU = 0, 0
 
 # create a folder in the given path
@@ -204,7 +208,6 @@ def train(request):
 
 
 def loadChart(request):
-
     context = {}
     global x_value, y_value
     global epoch, train_discriminator_loss_meter, train_generator_loss_meter, train_pixel_loss, train_adversarial_loss_meter, pixAcc
@@ -217,9 +220,11 @@ def loadChart(request):
     pixAcc = n_train.pixAcc_
     mIoU = n_train.mIoU_
 
-    print(x_value)
-    print(y_value)
-    if train_generator_loss_meter > 0.0 :
+    print("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB", train_discriminator_loss_meter)
+
+    # print(x_value)
+    # print(y_value)
+    if train_generator_loss_meter > 0.0  :
         x_value.append(epoch)
         y_value.append(train_generator_loss_meter)
 
@@ -233,12 +238,52 @@ def loadChart(request):
 
         data = go.Data([trace1])
         layout = go.Layout(title="Epoch vs Generator Loss", xaxis={
-                        'title': 'x1'}, yaxis={'title': 'x2'})
+                        'title': 'epoch'}, yaxis={'title': 'generator Loss'})
         figure = go.Figure(data=data, layout=layout)
         div = opy.plot(figure, auto_open=False, output_type='div')
         context['graph'] = div
 
     html_template = loader.get_template('live-chart.html')
+    return HttpResponse(html_template.render(context, request))
+
+    
+
+def loadChartDis(request):
+
+    print("Load chart Discriminator")
+    context = {}
+    global x_value_dis, y_value_dis
+    global epoch, train_discriminator_loss_meter, train_generator_loss_meter, train_pixel_loss, train_adversarial_loss_meter, pixAcc
+
+    epoch = n_train.epoch
+    train_discriminator_loss_meter = n_train.train_discriminator_loss_meter
+    train_generator_loss_meter = n_train.train_generator_loss_meter
+    train_pixel_loss = n_train.train_pixel_loss
+    train_adversarial_loss_meter = n_train.train_adversarial_loss_meter
+    pixAcc = n_train.pixAcc_
+    mIoU = n_train.mIoU_
+
+    print("train_discriminator_loss_meter ", n_train.train_discriminator_loss_meter)
+    if train_discriminator_loss_meter > 0 :
+        x_value_dis.append(epoch)
+        y_value_dis.append(train_discriminator_loss_meter)
+
+        x = x_value_dis
+        y = y_value_dis
+        trace1 = go.Scatter(x=x, y=y, marker={'color': 'red', 'symbol': 104, 'size': 10},
+                            mode="lines",  name='1st Trace')
+
+        # print(x_value_dis)
+        # print(y_value_dis)
+
+        data = go.Data([trace1])
+        layout = go.Layout(title="Epoch vs Discriminator Loss", xaxis={
+                        'title': 'epoch'}, yaxis={'title': 'discriminator loss'})
+        figure = go.Figure(data=data, layout=layout)
+        div = opy.plot(figure, auto_open=False, output_type='div')
+        context['graph_dis'] = div
+
+    html_template = loader.get_template('live-chart-dis.html')
     return HttpResponse(html_template.render(context, request))
 
 
@@ -260,3 +305,11 @@ def evaluate(request):
             print(test.total_time / 500)
 
     return HttpResponse(html_template.render(context, request))
+
+
+def launchTensorBoard():
+    os.system('tensorboard --logdir=../logs/')
+    return
+
+t = threading.Thread(target=launchTensorBoard, args=([]))
+t.start()

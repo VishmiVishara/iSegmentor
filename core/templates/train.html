@@ -12,14 +12,14 @@
 
 
 <!-- Header -->
-<!-- <div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
+<div class="header bg-gradient-primary pb-8 pt-5 pt-md-4">
   <div class="container-fluid">
     <div class="header-body">
     </div>
   </div>
-</div> -->
+</div>
 
-<div class="container-fluid mt-15">
+<div class="container-fluid mt--8">
   <div class="card bg-secondary shadow">
     <div class="card-header bg-white border-0">
       <div class="row align-items-center">
@@ -61,21 +61,32 @@
               </div>
             </div>
             <div class="col-sm" style="display: flex; justify-content: center;  vertical-align: middle;">
-              <form method="GET"></form>
-              {% csrf_token %}
-              <button type="submit" name="btn-train_init" id="btn-train_init" class="btn btn-default">Train
-                Model</button>
+              <div class="col-sm" style="display: flex; justify-content: center;  vertical-align: middle;">
+                <form method="GET">
+                  {% csrf_token %}
+                  <button type="submit" name="btn-train_init" id="btn-train_init" class="btn btn-default">Train
+                    Model</button>
+                </form>
+              </div>
+              <div class="col-sm" style="display: flex; justify-content: center;  vertical-align: middle;">
+                <form method="GET">
+                  {% csrf_token %}
+                  <button type="submit" name="btn-train_init" id="btn-train_init" class="btn btn-default">View Tensorboard
+                    </button>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <hr class="my-4" />
+          <div class="row">
+            <div class="col-sm" id="chart-live" style="width: 30vw; height: 60vh; background-color: violet;"> </div>
+            <div class="col-sm" id="chart-live-dis"
+              style="width: 30vw; height: 60vh; background-color: rgb(130, 238, 144);">
+            </div>
       </form>
     </div>
   </div>
-
-  <hr class="my-4" />
-  <div id="chart-live" style="width: 30vw; height: 60vh; background-color: violet;">
-
-  </div>
-  </form>
-</div>
-</div>
 </div>
 
 {% endblock content %}
@@ -107,9 +118,33 @@
         }
       });
 
+
+      console.log("timmer call Discriminator")
+      $.ajax({
+        data: $(this).serialize(), // get the form data
+        url: "{% url 'livedis' %}",
+        // on success
+        success: function (response) {
+
+          console.log(response)
+          $("#chart-live-dis").html(response)
+        },
+        // on error
+        error: function (response) {
+          // alert the error if any error occured
+          console.log(response.responseJSON.errors)
+        }
+      });
+
     }, 1000 * 5) //ten second 
 
-  })
+
+  });
+
+
+
+
+
 </script>
 
 {% endblock javascripts %}

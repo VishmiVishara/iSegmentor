@@ -35,11 +35,11 @@ training:
     geno_type: NASUNET
     init_channels: 48
     depth: 5
-    epoch: 500
+    epoch: 1
     batch_size: 1
     val_batch_size: 1
     report_freq: 10
-    n_workers: 3
+    n_workers: 1
     multi_gpus: False
     double_down_channel: False
     grad_clip: 3
@@ -55,6 +55,7 @@ training:
     lr_schedule:
         name: 'poly_lr'
         max_iter: 100
-    resume: '../logs/nasunet/train/cityscapes/20210330-032310/checkpint.pth.tar'
+    resume: 
+        #'../logs/nasunet/train/cityscapes/20210330-032310/checkpint.pth.tar'
 test:
 report_freq: 30
