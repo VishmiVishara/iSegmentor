@@ -69,13 +69,225 @@
               </form>
             </div>
 
-            <hr class="my-4" />
+            <!-- <hr class="my-4" /> -->
 
 
       </form>
+
+
+
+      
     </div>
+     
   </div>
 </div>
+
+<hr class="my-4" />
+  <!-- Card stats -->
+  <div class="row" style="display: flex; justify-content: center;  vertical-align: middle;">
+    <div class="col-xl-3">
+      <div class="card card-stats mb-4 mb-xl-0">
+        <div class="card-body">
+          <div class="row" >
+            <div class="col">
+              <h5 class="card-title text-uppercase text-muted mb-0">Pixel Accuracy</h5>
+              <span id="pixel_acc" class="h2 font-weight-bold mb-0">{{ test_pic_acc }}</span>
+            </div>
+            <div class="col-auto">
+              <div class="icon icon-shape bg-danger text-white rounded-circle shadow">
+                <i class="fas fa-chart-bar"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-3 col-lg-6">
+      <div class="card card-stats mb-4 mb-xl-0">
+        <div class="card-body">
+          <div class="row">
+            <div class="col">
+              <h5 class="card-title text-uppercase text-muted mb-0">mIoU</h5>
+              <span id="miou" class="h2 font-weight-bold mb-0"> {{ test_mIoU }} </span>
+            </div>
+            <div class="col-auto">
+              <div class="icon icon-shape bg-warning text-white rounded-circle shadow">
+                <i class="fas fa-chart-pie"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-3 col-lg-6">
+      <div class="card card-stats mb-4 mb-xl-0">
+        <div class="card-body">
+          <div class="row">
+            <div class="col">
+              <h5 class="card-title text-uppercase text-muted mb-0">Performance (seconds)</h5>
+              <span id="performance"  class="h2 font-weight-bold mb-0">{{ time }}</span>
+            </div>
+            <div class="col-auto">
+              <div class="icon icon-shape bg-info text-white rounded-circle shadow">
+                <i class="fas fa-percent"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+
+  <div class="container-fluid mt--12">
+
+    <!-- Table -->
+    <div class="row mt-5">
+      <div class="col">
+        <div class="card shadow">
+          <div class="card-header border-0">
+            <h3 class="mb-0">Qualitative Analysis</h3>
+          </div>
+          <div class="table-responsive">
+            <table class="table align-items-center table-flush">
+              <thead class="thead-light">
+                <tr>
+                  <th scope="col">Pix2Pix (Isola et al., 2017)</th>
+                  <th scope="col">Proposed Approach</th>
+                  <th scope="col">GT Image</th>
+                  <th scope="col">DeepLabV3 (Chen et al., 2017)</th>
+                  <th scope="col">Approach with Pix2Pix type GAN (Zhu et al., 2019)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td scope="row">
+                    <div class="media align-items-center">
+                      <a href="https://phillipi.github.io/pix2pix/images/cityscapes_cGAN_AtoB/latest_net_G_val/images/output/frankfurt_000000_000294_leftImg8bit.jpg" >
+                        <img alt="Image placeholder" src="/static/assets/img/pix2pix/11.jpg">
+                      </a>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="media align-items-center">
+                      <a href="#" >
+                        <img alt="Image placeholder" src="/static/assets/img/our/11.png">
+                      </a>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="media align-items-center">
+                      <a href="#" >
+                        <img alt="Image placeholder" src="/static/assets/img/gt/1.png">
+                      </a>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="media align-items-center">
+                      <a href="#" >
+                        <img alt="Image placeholder" src="/static/assets/img/deeplabv3/11.png">
+                      </a>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="media align-items-center">
+                      <a href="#" >
+                        <img alt="Image placeholder" src="/static/assets/img/autodeeplab/11.png">
+                      </a>
+                    </div>
+                  </td>
+                </tr>
+                 <!-- Second Row -->
+                 <tr>
+                  <td scope="row">
+                    <div class="media align-items-center">
+                      <a href="https://phillipi.github.io/pix2pix/images/cityscapes_cGAN_AtoB/latest_net_G_val/images/output/frankfurt_000000_000294_leftImg8bit.jpg" >
+                        <img alt="Image placeholder" src="/static/assets/img/pix2pix/22.jpg">
+                      </a>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="media align-items-center">
+                      <a href="#" >
+                        <img alt="Image placeholder" src="/static/assets/img/our/222.png">
+                      </a>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="media align-items-center">
+                      <a href="#" >
+                        <img alt="Image placeholder" src="/static/assets/img/gt/22.jpg">
+                      </a>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="media align-items-center">
+                      <a href="#" >
+                        <img alt="Image placeholder" src="/static/assets/img/deeplabv3/22.png">
+                      </a>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="media align-items-center">
+                      <a href="#" >
+                        <img alt="Image placeholder" src="/static/assets/img/autodeeplab/22.png">
+                      </a>
+                    </div>
+                  </td>
+                </tr>
+
+                   <!-- Third Row -->
+                   <tr>
+                    <td scope="row">
+                      <div class="media align-items-center">
+                        <a href="https://phillipi.github.io/pix2pix/images/cityscapes_cGAN_AtoB/latest_net_G_val/images/output/frankfurt_000000_000294_leftImg8bit.jpg" >
+                          <img alt="Image placeholder" src="/static/assets/img/pix2pix/3.jpg">
+                        </a>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="media align-items-center">
+                        <a href="#" >
+                          <img alt="Image placeholder" src="/static/assets/img/our/33.png">
+                        </a>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="media align-items-center">
+                        <a href="#" >
+                          <img alt="Image placeholder" src="/static/assets/img/gt/33.png">
+                        </a>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="media align-items-center">
+                        <a href="#" >
+                          <img alt="Image placeholder" src="/static/assets/img/deeplabv3/33.png">
+                        </a>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="media align-items-center">
+                        <a href="#" >
+                          <img alt="Image placeholder" src="/static/assets/img/autodeeplab/33.png">
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+    {% include "includes/footer.html" %}
+
+  </div>
 
 {% endblock content %}
 

@@ -305,10 +305,15 @@ def evaluate(request):
 
             test_mIoU = test.miou
             test_pic_acc =  test.pixel_acc
+            time = test.total_time / 500
 
+            context["test_mIoU"] = test_mIoU * 100
+            context["test_pic_acc"]= test_pic_acc *100
+            context["time"] = time
+           
             print(test_mIoU)
             print(test_pic_acc)
-            print(test.total_time / 500)
+            print(time)
 
     return HttpResponse(html_template.render(context, request))
 

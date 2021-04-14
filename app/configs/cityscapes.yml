@@ -55,7 +55,6 @@ training:
     lr_schedule:
         name: 'poly_lr'
         max_iter: 100
-    resume: 
-        #'../logs/nasunet/train/cityscapes/20210330-032310/checkpint.pth.tar'
+    resume: 'app/logs/nasunet/train/cityscapes/20210413-125352/checkpint.pth.tar'
 test:
 report_freq: 30
