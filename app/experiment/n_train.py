@@ -9,7 +9,7 @@ import torch.nn as nn
 from torch.utils import data
 import torch.backends.cudnn as cudnn
 
-# sys.path.append('..')
+sys.path.append('..')
 from options.train_options import TrainOptions
 from data import create_dataset
 from util.utils import get_logger, save_checkpoint, calc_time

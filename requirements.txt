@@ -15,7 +15,8 @@ whitenoise
 # pydicom
 # SimpleITK
 # Pillow
-# PyYAML
+PyYAML
+plotly
 # opencv-python
 # pygraphviz
 # graphviz

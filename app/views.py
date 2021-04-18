@@ -202,8 +202,8 @@ def train(request):
                 
             if request.POST.get('btn-train-init', True):
                 print("training starting.......")
-                # sys.argv = ["hello"]
-                # n_train.main()
+                sys.argv = ["hello"]
+                n_train.main()
                 alerter = Alerter()
                 alerter.send_emails("A New Model Training initiated on Cityscapes Dataset" +
                 "using Searched U-Net Architecture - \n\n" +  str(geno)
