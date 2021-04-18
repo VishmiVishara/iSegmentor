@@ -30,8 +30,8 @@ LOGS_ROOT = os.path.join(BASE_DIR, r'logs/')
 
 setting_obj = ""
 dataset_list = ["CityScapes", "PASCAL VOC 2012"]
-original_dataset_path = MEDIA_ROOT+"/{}/original_data"
-gt_dataset_path = MEDIA_ROOT+"/{}/gt_data"
+original_dataset_path = MEDIA_ROOT+"datasets"+"/{}/original_data"
+gt_dataset_path = MEDIA_ROOT+"datasets"+"/{}/gt_data"
 ac = 0
 x_value = []
 y_value = []

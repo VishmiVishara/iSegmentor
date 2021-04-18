@@ -22,7 +22,7 @@ class BaseOptions():
 
         # basic parameters
 
-        parser.add_argument('--dataroot', type=str, default=r'./app/datasets/cityscapes', help='path to images (should have subfolders trainA, trainB, valA, valB, etc)')
+        parser.add_argument('--dataroot', type=str, default=r'./media/datasets/cityscapes', help='path to images (should have subfolders trainA, trainB, valA, valB, etc)')
         parser.add_argument('--name', type=str, default='experiment_name', help='name of the experiment. It decides where to store samples and models')
         parser.add_argument('--checkpoints_dir', type=str, default='./checkpoints', help='models are saved here')
         # model parameters

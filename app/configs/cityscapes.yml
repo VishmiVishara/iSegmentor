@@ -35,7 +35,7 @@ training:
     geno_type: NASUNET
     init_channels: 48
     depth: 5
-    epoch: 1
+    epoch: 1000
     batch_size: 1
     val_batch_size: 1
     report_freq: 10

@@ -32,3 +32,5 @@ app/datasets/cityscapes/
 
 app/logs
 .idea/
+
+media/
