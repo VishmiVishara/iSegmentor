@@ -157,6 +157,8 @@ def search(request):
 
 def train(request):
     print("Load train")
+    t = threading.Thread(target=launchTensorBoard, args=([]))
+    t.start()
     context = {}
     context["dataset_list"] = dataset_list
 
@@ -198,7 +200,10 @@ def train(request):
         # print(geno)
 
         if request.method == 'POST':
-            #if 'btn-tensorboard' in request.POST:
+            # if 'btn-tensorboard' in request.POST:
+            #     t = threading.Thread(target=launchTensorBoard, args=([]))
+            #     t.start()
+
                 
             if request.POST.get('btn-train-init', True):
                 print("training starting.......")
@@ -233,7 +238,8 @@ def loadChart(request):
 
     # print(x_value)
     # print(y_value)
-    if train_generator_loss_meter > 0.0  :
+    if train_generator_loss_meter > 0.0 :
+        # print("Trueeeeeeeeeeeeeeeeeeeeeeeeeee")
         x_value.append(epoch)
         y_value.append(train_generator_loss_meter)
 
@@ -242,8 +248,8 @@ def loadChart(request):
         trace1 = go.Scatter(x=x, y=y, marker={'color': 'red', 'symbol': 104, 'size': 10},
                             mode="lines",  name='1st Trace')
 
-        print(x_value)
-        print(y_value)
+        # print(x_value)
+        # print(y_value)
 
         data = go.Data([trace1])
         layout = go.Layout(title="Epoch vs Generator Loss", xaxis={
@@ -307,9 +313,9 @@ def evaluate(request):
             test_pic_acc =  test.pixel_acc
             time = test.total_time / 500
 
-            context["test_mIoU"] = test_mIoU * 100
-            context["test_pic_acc"]= test_pic_acc *100
-            context["time"] = time
+            context["test_mIoU"] = str(round(test_mIoU * 100, 2))
+            context["test_pic_acc"]= str(round( test_pic_acc *100, 2))
+            context["time"] = str(round(time,4))
            
             print(test_mIoU)
             print(test_pic_acc)
