@@ -58,7 +58,7 @@ class Network(object):
         print('Usage model :{}'.format(self.model_name))
 
     def _init_logger(self):
-        log_dir = '../logs/' + self.model_name + '/train' + '/{}'.format(self.cfg['data']['dataset']) \
+        log_dir = './app/logs/' + self.model_name + '/train' + '/{}'.format(self.cfg['data']['dataset']) \
                   + '/{}'.format(time.strftime('%Y%m%d-%H%M%S'))
         self.logger = get_logger(log_dir)
         print('RUNDIR: {}'.format(log_dir))

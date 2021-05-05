@@ -22,7 +22,17 @@ from options.test_options import TestOptions
 
 c = 0
 pixel_acc, miou, total_time = 0,0,0
-test_dir = " "
+test_dir = " "# create a folder in the given path
+def createFolder(directory):
+    try:
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+    except OSError as e:
+        print('ERROR: Directory Exist', str(e))
+        logging.info('ERROR: Directory Exist. ' + directory)
+
+
+
 class TestNetwork(object):
     def __init__(self):
         self._init_configure()
@@ -44,11 +54,14 @@ class TestNetwork(object):
 
     def _init_logger(self):
         global test_dir
-        log_dir = '../logs/'+ self.model_name + '/test' + '/{}'.format(self.cfg['data']['dataset']) \
+        log_dir = './app/logs/'+ self.model_name + '/test' + '/{}'.format(self.cfg['data']['dataset']) \
                   +'/{}'.format(time.strftime('%Y%m%d-%H%M'))
         self.logger = get_logger(log_dir)
         print('RUNDIR: {}'.format(log_dir))
+        #createFolder(log_dir)
         test_dir = log_dir
+
+        print("RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR", test_dir)
         self.logger.info('{}-Train'.format(self.model_name))
         self.save_path = log_dir
         self.save_image_path = os.path.join(self.save_path, 'saved_test_images')

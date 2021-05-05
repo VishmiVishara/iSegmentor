@@ -19,7 +19,13 @@ from experiment import n_train
 from experiment import test
 import threading
 import sys
+import shutil
+from datetime import datetime    
+import pytz    
+tz_NY = pytz.timezone('Asia/Kolkata')   
+datetime_NY = datetime.now(tz_NY)  
 from alert_service import Alerter
+
 
 BASE_DIR = Path(__file__).parent
 CORE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -46,14 +52,6 @@ test_dir = " "
 epoch, train_discriminator_loss_meter, train_generator_loss_meter, train_pixel_loss, train_adversarial_loss_meter, pixAcc = 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
 test_pic_acc, test_mIoU = 0, 0
 
-# create a folder in the given path
-def createFolder(directory):
-    try:
-        if not os.path.exists(directory):
-            os.makedirs(directory)
-    except OSError as e:
-        print('ERROR: Directory Exist', str(e))
-        logging.info('ERROR: Directory Exist. ' + directory)
 
 def index(request):
 
@@ -311,12 +309,14 @@ def evaluate(request):
             sys.argv = ["hello"]
             test.main()
 
+            test_dir = test.test_dir
+
+            print(test_dir)
+
             test_mIoU = test.miou
             test_pic_acc =  test.pixel_acc
             time = test.total_time / 500
-
-            test_dir = test.test_dir
-
+            
             context["test_mIoU"] = str(round(test_mIoU * 100, 2))
             context["test_pic_acc"]= str(round( test_pic_acc *100, 2))
             context["time"] = str(round(time,2))
@@ -324,6 +324,22 @@ def evaluate(request):
             print(test_mIoU)
             print(test_pic_acc)
             print(time)
+
+    if 'btn-download' in request.GET:
+        model_path = test_dir
+
+        if model_path is not None:
+            zip_file_name = test_dir+"_results_"+ str(datetime_NY)
+            #zip_file_path = os.path.join(folder_path_train + '/' + zip_file_name)
+
+            print(zip_file_name)
+            print(model_path)
+
+            shutil.make_archive(zip_file_name, 'zip', model_path)
+            #shutil.rmtree(model_path)
+            context["test_download"] = zip_file_name
+            
+            return 1
 
     return HttpResponse(html_template.render(context, request))
 
