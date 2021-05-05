@@ -49,6 +49,7 @@ media_folder = MEDIA_ROOT
 config_path = CONFIG_ROOT
 
 test_dir = " "
+zipname = " "
 epoch, train_discriminator_loss_meter, train_generator_loss_meter, train_pixel_loss, train_adversarial_loss_meter, pixAcc = 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
 test_pic_acc, test_mIoU = 0, 0
 
@@ -300,6 +301,7 @@ def loadChartDis(request):
 
 def evaluate(request):
     global test_dir
+    global zipname 
     html_template = loader.get_template('evaluate.html')
     context = {}
     context["dataset_list"] = dataset_list
@@ -325,26 +327,43 @@ def evaluate(request):
             print(test_pic_acc)
             print(time)
 
-    if 'btn-download' in request.GET:
-        model_path = test_dir
-
-        if model_path is not None:
-            zip_file_name = test_dir+"_results_"+ str(datetime_NY)
-            #zip_file_path = os.path.join(folder_path_train + '/' + zip_file_name)
-
-            print(zip_file_name)
-            print(model_path)
-
-            shutil.make_archive(zip_file_name, 'zip', model_path)
-            #shutil.rmtree(model_path)
-            context["test_download"] = zip_file_name
-            
-            return 1
+    # if 'btn-download' in request.GET:
+        
 
     return HttpResponse(html_template.render(context, request))
+
+
+def download(request):
+
+    model_path = test_dir
+
+    if model_path is not None:
+        zip_file_name = test_dir+"_results_"+ str(datetime_NY)
+        #zip_file_path = os.path.join(folder_path_train + '/' + zip_file_name)
+
+        print(zip_file_name)
+        print(model_path)
+
+        shutil.make_archive(zip_file_name, 'zip', model_path)
+        #shutil.rmtree(model_path)
+        #context["test_download"] = zip_file_name
+        zipname = zip_file_name + ".zip"
+
+    if zipname != ' ':
+        with open(zipname, 'rb') as f:
+            contents = f.read()
+        # Set the return value of the HttpResponse
+        response = HttpResponse(contents, content_type = "application\zip")
+        # Set the HTTP header for sending to browser
+        filename= 'results'+ str(datetime.now()) + ".zip"
+        response['Content-Disposition'] = "attachment; filename=%s" % filename
+        # Return the response value
+        return response
 
 def launchTensorBoard():
     print(LOGS_ROOT)
     os.system('tensorboard --logdir ' + 'app/logs/')
     return
+
+
 

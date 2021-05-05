@@ -56,9 +56,8 @@
             <div class="col-sm" style="display: flex; justify-content: center;  vertical-align: middle;">
               <form method="GET">
                 {% csrf_token %}
-                <button type="submit" name="btn-download" id="btn-download" class="btn btn-warning"  >
-                  Download
-                  <a  href="{{ test_download }}" download> 
+                <button type="submit" name="btn-download" id="btn-download" class="btn btn-warning">
+                  <a style="color:white;"href="{% url 'download' %}">Download </a>
                 </button>
               </form>
             </div>
