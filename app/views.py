@@ -42,6 +42,7 @@ y_value_dis = []
 media_folder = MEDIA_ROOT
 config_path = CONFIG_ROOT
 
+test_dir = " "
 epoch, train_discriminator_loss_meter, train_generator_loss_meter, train_pixel_loss, train_adversarial_loss_meter, pixAcc = 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
 test_pic_acc, test_mIoU = 0, 0
 
@@ -300,6 +301,7 @@ def loadChartDis(request):
     return HttpResponse(html_template.render(context, request))
 
 def evaluate(request):
+    global test_dir
     html_template = loader.get_template('evaluate.html')
     context = {}
     context["dataset_list"] = dataset_list
@@ -313,9 +315,11 @@ def evaluate(request):
             test_pic_acc =  test.pixel_acc
             time = test.total_time / 500
 
+            test_dir = test.test_dir
+
             context["test_mIoU"] = str(round(test_mIoU * 100, 2))
             context["test_pic_acc"]= str(round( test_pic_acc *100, 2))
-            context["time"] = str(round(time,4))
+            context["time"] = str(round(time,2))
            
             print(test_mIoU)
             print(test_pic_acc)

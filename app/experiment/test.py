@@ -22,6 +22,7 @@ from options.test_options import TestOptions
 
 c = 0
 pixel_acc, miou, total_time = 0,0,0
+test_dir = " "
 class TestNetwork(object):
     def __init__(self):
         self._init_configure()
@@ -42,10 +43,12 @@ class TestNetwork(object):
         print('Usage model :{}'.format(self.model_name))
 
     def _init_logger(self):
+        global test_dir
         log_dir = '../logs/'+ self.model_name + '/test' + '/{}'.format(self.cfg['data']['dataset']) \
                   +'/{}'.format(time.strftime('%Y%m%d-%H%M'))
         self.logger = get_logger(log_dir)
         print('RUNDIR: {}'.format(log_dir))
+        test_dir = log_dir
         self.logger.info('{}-Train'.format(self.model_name))
         self.save_path = log_dir
         self.save_image_path = os.path.join(self.save_path, 'saved_test_images')
