@@ -3,9 +3,10 @@ import random
 import numpy as np
 from PIL import Image, ImageOps, ImageFilter
 from tqdm import tqdm
-
+import sys
 import torch
 from .base import BaseDataset
+# sys.path.append('..')
 
 
 class VOCSegmentation(BaseDataset):
@@ -21,15 +22,16 @@ class VOCSegmentation(BaseDataset):
     BASE_DIR = 'VOC2012'
     CLASS_WEIGHTS = None
 
-    def __init__(self, root='../', split='train', mode=None):
+    def __init__(self, root=os.path.expanduser('~/.encoding/data'), split='train', mode=None):
 
         super(VOCSegmentation, self).__init__(root, split, mode)
         _voc_root = os.path.join(self.root, self.BASE_DIR)
         _mask_dir = os.path.join(_voc_root, 'SegmentationClass')
         _image_dir = os.path.join(_voc_root, 'JPEGImages')
+        print(_voc_root)
         self.joint_transform = None
         # train/val/test splits are pre-cut
-        _splits_dir = os.path.join(_voc_root, 'ImageSets/Segmentation')
+        _splits_dir = os.path.join(_voc_root, r'ImageSets/Segmentation')
         if self.mode == 'train':
             _split_f = os.path.join(_splits_dir, 'trainval.txt')
         elif self.mode == 'val':

@@ -17,6 +17,7 @@ import plotly.offline as opy
 import plotly.graph_objs as go
 from experiment import n_train
 from experiment import test
+from experiment import search_cell
 import threading
 import sys
 import shutil
@@ -35,9 +36,9 @@ CONFIG_ROOT = os.path.join(BASE_DIR, 'configs')
 LOGS_ROOT = os.path.join(BASE_DIR, r'logs/')
 
 setting_obj = ""
-dataset_list = ["CityScapes", "PASCAL VOC 2012"]
-original_dataset_path = MEDIA_ROOT+"datasets"+"/{}/original_data"
-gt_dataset_path = MEDIA_ROOT+"datasets"+"/{}/gt_data"
+dataset_list = ["CityScapes"]
+original_dataset_path = MEDIA_ROOT+"/datasets"+"/{}/original_data"
+gt_dataset_path = MEDIA_ROOT+"/datasets"+"/{}/gt_data"
 ac = 0
 x_value = []
 y_value = []
@@ -53,15 +54,25 @@ zipname = " "
 epoch, train_discriminator_loss_meter, train_generator_loss_meter, train_pixel_loss, train_adversarial_loss_meter, pixAcc = 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
 test_pic_acc, test_mIoU = 0, 0
 
+# create a folder in the given path
+def createFolder(directory):
+    try:
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+    except OSError as e:
+        print('ERROR: Directory Exist', str(e))
+        logging.info('ERROR: Directory Exist. ' + directory)
+
 
 def index(request):
 
     context = {}
     global setting_obj
-
+    context["dataset_list"] = dataset_list
     if request.method == 'POST':
         # get dataset name to create a folder to save data
         if 'save-dataset' in request.POST:
+            print("Calling save dataset............")
             datasetName = request.POST.get('datasetname')
             print(datasetName)
 
@@ -91,68 +102,78 @@ def index(request):
 
             dataset_list.append(datasetName)
             print(dataset_list)
-
-    if request.method == 'GET':
+    
         # get dataset name to create a folder to save data
-        if 'config_save' in request.GET:
-            datasetName = request.GET.get('dataset')
-            print(datasetName)
-            split = request.GET.get('split')
-            s_epoch = request.GET.get('s_epoch')
-            s_batch_size = request.GET.get('s_batch_size')
-            train_portion = request.GET.get('train_portion')
-            arch_optimizer = request.GET.get('arch_optimizer')
-            s_loss = request.GET.get('s_loss')
+    if 'config_save' in request.GET:
+        print("CONFIG SAVE.............")
+        print(request.GET)
+        
+        datasetName = request.GET.get('dataset')
+        print(datasetName)
+        split = request.GET.get('split')
+        s_epoch = request.GET.get('s_epoch')
+        s_batch_size = request.GET.get('s_batch_size')
+        train_portion = request.GET.get('train_portion')
+        arch_optimizer = request.GET.get('arch_optimizer')
+        s_loss = request.GET.get('s_loss')
 
-            geno_type = request.GET.get('geno_type')
-            t_epoch = request.GET.get('t_epoch')
-            t_batch_size = request.GET.get('t_batch_size')
-            val_batch_size = request.GET.get('val_batch_size')
-            model_optimizer = request.GET.get('model_optimizer')
-            t_loss = request.GET.get('t_loss')
+        geno_type = request.GET.get('geno_type')
+        t_epoch = request.GET.get('t_epoch')
+        t_batch_size = request.GET.get('t_batch_size')
+        val_batch_size = request.GET.get('val_batch_size')
+        model_optimizer = request.GET.get('model_optimizer')
+        t_loss = request.GET.get('t_loss')
 
-            save_config = setting_obj
-            save_config['data']['dataset'] = datasetName
-            save_config['data']['split'] = split
+        save_config = setting_obj
+        save_config['data']['dataset'] = datasetName
+        save_config['data']['split'] = str(split)
 
-            save_config['searching']['epoch'] = s_epoch
-            save_config['searching']['batch_size'] = s_batch_size
-            save_config['searching']['train_portion'] = train_portion
-            save_config['searching']['arch_optimizer'] = arch_optimizer
-            save_config['searching']['loss'] = s_loss
+        save_config['searching']['epoch'] = s_epoch
+        save_config['searching']['batch_size'] = s_batch_size
+        save_config['searching']['train_portion'] = train_portion
+        save_config['searching']['arch_optimizer']['name']  = arch_optimizer
+        save_config['searching']['loss']['name'] = s_loss
 
-            save_config['training']['geno_type'] = geno_type
-            save_config['training']['epoch'] = t_epoch
-            save_config['training']['batch_size'] = t_batch_size
-            save_config['training']['val_batch_size'] = val_batch_size
-            save_config['training']['model_optimizer'] = model_optimizer
-            save_config['training']['loss'] = t_loss
+        save_config['training']['geno_type'] = geno_type
+        save_config['training']['epoch'] = t_epoch
+        save_config['training']['batch_size'] = t_batch_size
+        save_config['training']['val_batch_size'] = val_batch_size
+        save_config['training']['model_optimizer']['name']  = model_optimizer
+        save_config['training']['loss']['name']  = t_loss
 
-            filename = config_path + "/" + datasetName + ".yml"
-            with open(filename, 'w') as f:
-                yaml.dump(save_config, f, allow_unicode=True)
+        filename = config_path + "/" + datasetName + ".yml"
+        with open(filename, 'w') as f:
+            yaml.dump(save_config, f, allow_unicode=True)
 
-        elif request.GET.get('tabs-icons-text-2-tab', True):
-            # read default config file
-            with open(config_path + r"/nas_unet_voc.yml", 'r') as yaml_in, open("voc.json", "w") as json_out:
-                # print(json_out)
-                yaml_object = yaml.safe_load(yaml_in)
-                data = json.dump(yaml_object, json_out)
+    if request.GET.get('tabs-icons-text-2-tab', True):
+        print("Calling config tab")
+        # read default config file
+        with open(config_path + r"/cityscapes.yml", 'r') as yaml_in, open("cityscpaes.json", "w") as json_out:
+            # print(json_out)
+            yaml_object = yaml.safe_load(yaml_in)
+            data = json.dump(yaml_object, json_out)
 
-            # create a json using default config
-            with open('voc.json') as f:
-                data = json.load(f)
-                # print(data["model"])
-                setting_obj = data
-                # save default config to the context
-                context['config'] = data
+        # create a json using default config
+        with open('cityscpaes.json') as f:
+            data = json.load(f)
+            # print(data["model"])
+            setting_obj = data
+            # save default config to the context
+            context['config'] = data
 
+    
     return render(request, 'index.html', context)
 
 def search(request):
     html_template = loader.get_template('search.html')
     context = {}
     context["dataset_list"] = dataset_list
+
+    if request.method == 'POST':
+        if 'btn-search-init' in request.POST:
+            sys.argv = ["hello"]
+            search_cell.main()
+
     return HttpResponse(html_template.render(context, request))
 
 def train(request):

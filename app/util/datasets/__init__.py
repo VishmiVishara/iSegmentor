@@ -1,3 +1,5 @@
+import os
+import sys
 from torchvision.datasets import *
 from .base import *
 from .coco import COCOSegmentation
@@ -11,6 +13,14 @@ from .bladder import Bladder
 from .chaos import CHAOS
 from .promise12 import Promise12
 from .camvid import CamVid
+from pathlib import Path
+# sys.path.append('..')
+
+
+# BASE_DIR = Path(__file__).parent
+# CORE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# MEDIA_ROOT = os.path.join(CORE_DIR, 'media')
 
 datasets = {
     'coco': COCOSegmentation,
@@ -45,9 +55,9 @@ acronyms = {
 }
 
 
-# dir = '/train_tiny_data/imgseg/'
+dir = '/media/datasets/'
 # =
 # dir = '../../../training_data/imageSeg/'
 
 def get_dataset(name, path=dir, **kwargs):
-    return datasets[name.lower()](root='../', **kwargs)
+    return datasets[name.lower()](root= path, **kwargs)

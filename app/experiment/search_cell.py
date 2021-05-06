@@ -35,7 +35,7 @@ class SearchNetwork(object):
 
     def _init_configure(self):
         parser = argparse.ArgumentParser(description='config')
-        parser.add_argument('--config', nargs='?',type=str,default='../configs/nas_unet/nas_unet_voc.yml',
+        parser.add_argument('--config', nargs='?',type=str,default='./app/configs/nas_unet_voc.yml',
                             help='Configuration file to use')
 
         self.args = parser.parse_args()
@@ -300,12 +300,14 @@ class SearchNetwork(object):
         self.writer.add_scalar('Val/mIoU', mIoU, self.epoch)
         self.writer.add_scalar('Val/loss', cur_loss, self.epoch)
 
-if __name__ == '__main__':
+def main():
+    print("call main")
     search_network = SearchNetwork()
     search_network.run()
 
 
-
+if __name__ == '__main__':
+    main()
 
 
 

@@ -92,7 +92,7 @@
                         <button name="save-dataset" style="color:white;" class="btn bg-success">Save Dataset</button>
                     </form>
 
-            
+
 
                 </div>
 
@@ -108,7 +108,8 @@
                                         <a class="nav-link mb-sm-3 mb-md-0 active" id="tabs-icons-text-1-tab"
                                             data-toggle="tab" href="#tabs-icons-text-1" role="tab"
                                             aria-controls="tabs-icons-text-1" aria-selected="true"><i
-                                                class="ni ni-cloud-upload-96 mr-2" class="btn bg-success"></i>Dataset</a>
+                                                class="ni ni-cloud-upload-96 mr-2"
+                                                class="btn bg-success"></i>Dataset</a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link mb-sm-3 mb-md-0" id="tabs-icons-text-2-tab" data-toggle="tab"
@@ -127,26 +128,38 @@
                                     <div class="tab-content" id="myTabContent">
                                         <div class="tab-pane fade show active" id="tabs-icons-text-1" role="tabpanel"
                                             aria-labelledby="tabs-icons-text-1-tab">
+
+                                            <div class="row">
+                                                <div class="col-sm"
+                                                    style="display: flex; justify-content: center;  vertical-align: middle;">
+                                                    <div class="form-group">
+                                                        <label class="form-control-label" for="input-datasetname">Select
+                                                            Dataset</label>
+                                                        <div class="dropdown">
+                                                            <select name="post_categories" class="filter-selectbox">
+                                                                {% for item in dataset_list %}
+                                                                <option value="{{ item }}"> {{ item }} </option>
+                                                                {% endfor %}
+
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <form method="get">
                                                 {% csrf_token %}
                                                 <label> Dataset name </label>
-                                                <input type="text" class="form-control"  name="dataset"
+                                                <input type="text" class="form-control" name="dataset"
                                                     value="{{ config.data.dataset }}"> <br>
                                                 <label> Train / Test Split </label>
                                                 <input type="text" class="form-control" name="split" value="0.7"> <br>
-
-                                                <div>
-                                                    <button type="button" id="config_save" name="config_save"
-                                                        class="btn btn-success">Save changes</button>
-                                                </div>
-                                            </form>
+                                            
 
                                         </div>
 
                                         <div class="tab-pane fade" id="tabs-icons-text-2" role="tabpanel"
                                             aria-labelledby="tabs-icons-text-2-tab">
-                                            <form method="GET">
-                                                {% csrf_token %}
+                                          
                                                 <label> Epoch </label>
                                                 <input type="text" class="form-control" name="s_epoch"
                                                     value="{{ config.searching.epoch }}"> <br>
@@ -163,13 +176,12 @@
                                                 <label> Loss: </label>
                                                 <input type="text" class="form-control" name="s_loss"
                                                     value="{{ config.searching.loss.name }}"> <br>
-                                            </form>
+                                          
                                         </div>
 
                                         <div class="tab-pane fade" id="tabs-icons-text-3" role="tabpanel"
                                             aria-labelledby="tabs-icons-text-3-tab">
-                                            <form method="GET">
-                                                {% csrf_token %}
+                                            
                                                 <label> U-Net Architecture </label>
                                                 <input type="text" class="form-control" name="geno_type"
                                                     value="{{ config.training.geno_type }}"> <br>
@@ -190,7 +202,12 @@
                                                 <input type="text" class="form-control" name="t_loss"
                                                     value="{{ config.training.loss.name }}"> <br>
 
-                                                
+
+                                            
+                                                <div>
+                                                    <button type="submit" id="config_save" name="config_save"
+                                                        class="btn btn-success">Save changes</button>
+                                                </div>
                                             </form>
                                         </div>
                                     </div>
@@ -211,6 +228,6 @@
         <!-- Specific JS goes HERE -->
         {% block javascripts %}
 
-        
+
 
         {% endblock javascripts %}
