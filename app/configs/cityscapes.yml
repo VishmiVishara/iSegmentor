@@ -1,6 +1,5 @@
 data:
   dataset: cityscapes
-  split: '0.7'
 model:
   arch: nas-unet
 report_freq: 30
@@ -10,10 +9,10 @@ searching:
     lr: 0.0003
     name: adam
     weight_decay: 0.005
-  batch_size: '1'
+  batch_size: 1
   depth: 4
   double_down_channel: false
-  epoch: '300'
+  epoch: 300
   gpu: true
   grad_clip: 5
   init_channels: 16
@@ -32,14 +31,14 @@ searching:
   report_freq: 20
   resume: null
   sharing_normal: true
-  train_portion: '0.5'
+  train_portion: 0.5
 test: null
 training:
   backbone: null
-  batch_size: '256'
+  batch_size: 1
   depth: 5
   double_down_channel: false
-  epoch: '100'
+  epoch: 100
   geno_type: NASUNET
   grad_clip: 3
   init_channels: 48
@@ -52,10 +51,10 @@ training:
   max_patience: 20
   model_optimizer:
     lr: 0.05
-    name: sgd
+    name: adam
     weight_decay: 0.0001
   multi_gpus: true
   n_workers: 2
   report_freq: 100
   resume: null
-  val_batch_size: '10'
+  val_batch_size: 1

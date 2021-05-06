@@ -109,7 +109,6 @@ def index(request):
         print(request.GET)
         
         datasetName = request.GET.get('dataset')
-        print(datasetName)
         split = request.GET.get('split')
         s_epoch = request.GET.get('s_epoch')
         s_batch_size = request.GET.get('s_batch_size')
@@ -126,18 +125,18 @@ def index(request):
 
         save_config = setting_obj
         save_config['data']['dataset'] = datasetName
-        save_config['data']['split'] = str(split)
+        #save_config['data']['split'] = float(split)
 
-        save_config['searching']['epoch'] = s_epoch
-        save_config['searching']['batch_size'] = s_batch_size
-        save_config['searching']['train_portion'] = train_portion
+        save_config['searching']['epoch'] = int(s_epoch)
+        save_config['searching']['batch_size'] = int(s_batch_size)
+        save_config['searching']['train_portion'] = float(train_portion)
         save_config['searching']['arch_optimizer']['name']  = arch_optimizer
         save_config['searching']['loss']['name'] = s_loss
 
         save_config['training']['geno_type'] = geno_type
-        save_config['training']['epoch'] = t_epoch
-        save_config['training']['batch_size'] = t_batch_size
-        save_config['training']['val_batch_size'] = val_batch_size
+        save_config['training']['epoch'] = int(t_epoch)
+        save_config['training']['batch_size'] = int(t_batch_size)
+        save_config['training']['val_batch_size'] = int(val_batch_size)
         save_config['training']['model_optimizer']['name']  = model_optimizer
         save_config['training']['loss']['name']  = t_loss
 
@@ -383,7 +382,7 @@ def download(request):
 
 def launchTensorBoard():
     print(LOGS_ROOT)
-    os.system('tensorboard --logdir ' + 'app/logs/')
+    os.system('tensorboard --logdir ./app/logs/')
     return
 
 

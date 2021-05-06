@@ -33,11 +33,11 @@
         <h6 class="heading-small text-muted mb-4">Train Pix2Pix GAN</h6>
         <div class="pl">
           <div class="row">
-            <div class="col-sm" style="display: flex; justify-content: center;  vertical-align: middle;">
+            <div class="col-lg-3" style="display: flex; justify-content: center;  vertical-align: middle;">
               <div class="form-group">
                 <label class="form-control-label" for="input-datasetname">Select Dataset</label>
                 <div class="dropdown">
-                  <select name="post_categories" class="filter-selectbox">
+                  <select name="post_categories" class="filter-selectbox" style="font-size: 12pt;">
                     {% for item in dataset_list %}
                     <option value="{{ item }}"> {{ item }} </option>
                     {% endfor %}
@@ -46,12 +46,12 @@
                 </div>
               </div>
             </div>
-            <div class="col-sm" style="display: flex; justify-content: center;  vertical-align: middle;">
+            <div class="col-lg-5" style="display: flex; justify-content: center;  vertical-align: middle;">
               <div class="form-group">
                 <label class="form-control-label" for="input-datasetname"> Select U-Net Architecture </label>
                 <div class="dropdown">
 
-                  <select name="post_categories" class="filter-selectbox">
+                  <select name="post_categories" class="filter-selectbox" style="font-size: 12pt;">
                     {% for item in architecture_list %}
                     <option value="{{ item }}"> {{ item }} </option>
                     {% endfor %}
@@ -60,20 +60,20 @@
                 </div>
               </div>
             </div>
-            <div class="col-sm" style="display: flex; justify-content: center;  vertical-align: middle;">
-              <div class="col-sm" style="display: flex; justify-content: center;  vertical-align: middle;">
+            <div class="col-xl-4" style="display: flex; justify-content: center;  vertical-align: middle;">
+              <!-- <div class="col-sm" style="display: flex; justify-content: center;  vertical-align: middle;"> -->
                 <form method="GET">
                   {% csrf_token %}
                   <button type="submit" name="btn-train_init" id="btn-train_init" class="btn btn-default">Start Training</button>
                 </form>
-              </div>
-              <div class="col-sm" style="display: flex; justify-content: center;  vertical-align: middle;">
+              <!-- </div> -->
+              <!-- <div class="col-sm" style="display: flex; justify-content: center;  vertical-align: middle;"> -->
                 <form method="POST">
                   {% csrf_token %}
                   <button type="submit" name="btn-tensorboard" id="btn-tensorboard" class="btn btn-warning" onclick=" window.open('http://localhost:6006', '_blank'); return false;">View Tensorboard
                     </button>
                 </form>
-              </div>
+              <!-- </div> -->
             </div>
           </div>
 

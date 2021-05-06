@@ -16096,6 +16096,10 @@ textarea[resize="horizontal"] {
   border-color: rgba(50, 151, 211, 0.25);
 }
 
+.filter-selectbox{
+  font-size: 14pt;
+}
+
 .header {
   position: relative;
 }
