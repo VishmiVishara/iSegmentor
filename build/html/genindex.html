@@ -1,0 +1,253 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="python" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Index &mdash; iSegmentor v1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="#" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> iSegmentor
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">iSegmentor</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Setup your PC</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+
+<h1 id="index">Setup your PC</h1>
+
+<div class="genindex-jumpbox">
+    <h2> Nvidia GeForce Experience </h2>
+<p>This tool is designed to update your NVIDIA GPU drivers and it is far easier to do it like this and it is highly recommended to be installed if you have an NVIDIA GPU.
+    <a href="https://www.geforce.com/geforce-experience/download">Download NVIDIA GeForce Experience</a><br><br>
+    <h2>Table of Contents</h2>
+    <p>To setup the PC for iSegmentor, please follow following steps:</p>
+<ul>
+    <li>1. Download Anaconda</li>
+    <li>2. Install Anaconda & Python</li>
+    <li>3. Start and Update Anaconda</li>
+    <li>4. Install CUDA Toolkit & cuDNN</li>
+    <li>5. Create an Anaconda Environment</li>
+</ul><br><br>
+
+<h3>Step 1: Download Anaconda</h3>
+<p>In this step, we will download the Anaconda Python package for your platform.
+    Anaconda is a free and easy-to-use environment for scientific Python.</p>
+
+<li>1.Install Anaconda (Python 3.6 version) <a href="https://www.anaconda.com/products/individual">Download</a><br><br>
+
+
+<h3>Step 2: Install Anaconda</h3>
+In this step, we will install the Anaconda Python software on your system.
+Installation is very easy and quick once you download the setup. Open the setup and follow the wizard instructions.
+#Note: It will automatically install Python and some basic libraries with it.
+It might take 5 to 10 minutes or some more time according to your system. <br><br>
+
+    <h3>Step 3: Update Anaconda</h3>
+    <p>Open Anaconda Prompt to type the following command(s). Don’t worry Anaconda Prompt works the same as cmd.</p>
+    <code> conda update conda</code>
+<code> conda update --all
+</code> <br><br>
+    <h3>Step 4: Install CUDA Toolkit & cuDNN</h3>
+    <p> Install CUDA Toolkit 9.0 or 8.0 <a href="https://developer.nvidia.com/cuda-downloads">Download</a></p>>
+<p>Choose your version depending on your Operating System and GPU.
+    #Version Support: Here is a guide to check that if your version supports your Nvidia Graphic Card</p>
+    <p>For downloading other versions you can follow this link:</p> <a href="https://developer.nvidia.com/cuda-toolkit-archive">
+
+
+
+#Note: People with version 9.0 Download can also install the given patch in any case of error while proceeding.
+2. Download cuDNN Download
+Download the latest version of cuDNN. Choose your version depending on your Operating System and CUDA. Membership registration is required. Don’t worry you can easily create an account using your email.
+
+Put your unzipped folder in C drive as follows:
+C:\cudnn-9.0-windows10-x64-v7
+    <h3>Step 5: Add cuDNN into Environment Path</h3>
+Open Run dialogue using (Win + R) and run the command sysdm.cpl
+In Window-10 System Properties, please select the Tab Advanced.
+Select Environment Variables
+Add the following path to your Environment.
+C:\cudnn-9.0-windows10-x64-v7\cuda\bin
+
+ 
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Vayangi Vishmi Vishara Ganepola.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

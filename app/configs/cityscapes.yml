@@ -38,7 +38,7 @@ training:
   batch_size: 1
   depth: 5
   double_down_channel: false
-  epoch: 100
+  epoch: 1000
   geno_type: NASUNET
   grad_clip: 3
   init_channels: 48
@@ -56,5 +56,5 @@ training:
   multi_gpus: true
   n_workers: 2
   report_freq: 100
-  resume: null
+  resume: 'app\logs\checkpint.pth.tar'
   val_batch_size: 1

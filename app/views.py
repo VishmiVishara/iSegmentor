@@ -21,6 +21,7 @@ from experiment import search_cell
 import threading
 import sys
 import shutil
+import zipfile
 from datetime import datetime    
 import pytz    
 tz_NY = pytz.timezone('Asia/Kolkata')   
@@ -352,22 +353,35 @@ def evaluate(request):
 
     return HttpResponse(html_template.render(context, request))
 
+def zipdir(path, ziph):
+    # ziph is zipfile handle
+    for root, dirs, files in os.walk(path):
+        for file in files:
+            ziph.write(os.path.join(root, file), 
+                       os.path.relpath(os.path.join(root, file), 
+                                       os.path.join(path, '..')))
 
 def download(request):
 
     model_path = test_dir
 
     if model_path is not None:
-        zip_file_name = test_dir+"_results_"+ str(datetime_NY)
+        zip_file_name = test_dir+"_results_"
         #zip_file_path = os.path.join(folder_path_train + '/' + zip_file_name)
 
         print(zip_file_name)
         print(model_path)
 
-        shutil.make_archive(zip_file_name, 'zip', model_path)
+        print("GGGGGGGGGGG")
+
+        zipname = zip_file_name + ".zip"
+        zipf = zipfile.ZipFile(zipname, 'w', zipfile.ZIP_DEFLATED)
+        zipdir(model_path, zipf)
+        zipf.close()
+        #shutil.make_archive(zip_file_name, 'zip', model_path)
         #shutil.rmtree(model_path)
         #context["test_download"] = zip_file_name
-        zipname = zip_file_name + ".zip"
+        
 
     if zipname != ' ':
         with open(zipname, 'rb') as f:

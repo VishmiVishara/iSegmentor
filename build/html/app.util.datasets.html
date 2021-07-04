@@ -1,0 +1,269 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="python" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>app.util.datasets package &mdash; iSegmentor v1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> iSegmentor
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">app.util.datasets package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#app-util-datasets-ade20k-module">app.util.datasets.ade20k module</a></li>
+<li><a class="reference internal" href="#app-util-datasets-base-module">app.util.datasets.base module</a></li>
+<li><a class="reference internal" href="#app-util-datasets-bladder-module">app.util.datasets.bladder module</a></li>
+<li><a class="reference internal" href="#app-util-datasets-calc-mean-std-module">app.util.datasets.calc_mean_std module</a></li>
+<li><a class="reference internal" href="#app-util-datasets-camvid-module">app.util.datasets.camvid module</a></li>
+<li><a class="reference internal" href="#app-util-datasets-chaos-module">app.util.datasets.chaos module</a></li>
+<li><a class="reference internal" href="#app-util-datasets-coco-module">app.util.datasets.coco module</a></li>
+<li><a class="reference internal" href="#app-util-datasets-imagenet-module">app.util.datasets.imagenet module</a></li>
+<li><a class="reference internal" href="#app-util-datasets-minc-module">app.util.datasets.minc module</a></li>
+<li><a class="reference internal" href="#app-util-datasets-pascal-aug-module">app.util.datasets.pascal_aug module</a></li>
+<li><a class="reference internal" href="#app-util-datasets-pascal-voc-module">app.util.datasets.pascal_voc module</a></li>
+<li><a class="reference internal" href="#app-util-datasets-pcontext-module">app.util.datasets.pcontext module</a></li>
+<li><a class="reference internal" href="#app-util-datasets-promise12-module">app.util.datasets.promise12 module</a></li>
+<li><a class="reference internal" href="#app-util-datasets-ultrasound-nerve-module">app.util.datasets.ultrasound_nerve module</a></li>
+<li><a class="reference internal" href="#module-contents">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">iSegmentor</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>app.util.datasets package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/app.util.datasets.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="app-util-datasets-package">
+<h1>app.util.datasets package<a class="headerlink" href="#app-util-datasets-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="app-util-datasets-ade20k-module">
+<h2>app.util.datasets.ade20k module<a class="headerlink" href="#app-util-datasets-ade20k-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="app-util-datasets-base-module">
+<h2>app.util.datasets.base module<a class="headerlink" href="#app-util-datasets-base-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="app-util-datasets-bladder-module">
+<h2>app.util.datasets.bladder module<a class="headerlink" href="#app-util-datasets-bladder-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="app-util-datasets-calc-mean-std-module">
+<h2>app.util.datasets.calc_mean_std module<a class="headerlink" href="#app-util-datasets-calc-mean-std-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="app-util-datasets-camvid-module">
+<h2>app.util.datasets.camvid module<a class="headerlink" href="#app-util-datasets-camvid-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="app-util-datasets-chaos-module">
+<h2>app.util.datasets.chaos module<a class="headerlink" href="#app-util-datasets-chaos-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="app-util-datasets-coco-module">
+<h2>app.util.datasets.coco module<a class="headerlink" href="#app-util-datasets-coco-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="app-util-datasets-imagenet-module">
+<h2>app.util.datasets.imagenet module<a class="headerlink" href="#app-util-datasets-imagenet-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="app-util-datasets-minc-module">
+<h2>app.util.datasets.minc module<a class="headerlink" href="#app-util-datasets-minc-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="app-util-datasets-pascal-aug-module">
+<h2>app.util.datasets.pascal_aug module<a class="headerlink" href="#app-util-datasets-pascal-aug-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="app-util-datasets-pascal-voc-module">
+<h2>app.util.datasets.pascal_voc module<a class="headerlink" href="#app-util-datasets-pascal-voc-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="app-util-datasets-pcontext-module">
+<h2>app.util.datasets.pcontext module<a class="headerlink" href="#app-util-datasets-pcontext-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="app-util-datasets-promise12-module">
+<h2>app.util.datasets.promise12 module<a class="headerlink" href="#app-util-datasets-promise12-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="app-util-datasets-ultrasound-nerve-module">
+<h2>app.util.datasets.ultrasound_nerve module<a class="headerlink" href="#app-util-datasets-ultrasound-nerve-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-contents">
+<h2>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Vayangi Vishmi Vishara Ganepola.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
