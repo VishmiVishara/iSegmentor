@@ -55,7 +55,7 @@ acronyms = {
 }
 
 
-dir = '/media/datasets/'
+dir = r'./media/datasets/'
 # =
 # dir = '../../../training_data/imageSeg/'
 

@@ -1,7 +1,7 @@
 from torch.functional import F
-from util.prim_ops_set import *
-from util.utils import consistent_dim
-from util.genotype import CellLinkDownPos, CellLinkUpPos, CellPos
+from NasUnet.util.prim_ops_set import *
+from NasUnet.util.utils import consistent_dim
+from NasUnet.util.genotype import CellLinkDownPos, CellLinkUpPos, CellPos
 
 class MixedOp(nn.Module):
 

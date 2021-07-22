@@ -10,7 +10,7 @@ __pycache__/
 *.db
 *.sqlite3
 *.log
-.
+
 
 
 # venv
@@ -29,6 +29,8 @@ staticfiles/*
 
 app/datasets/cityscapes.zip
 app/datasets/cityscapes/
+app/NasUnet/logs/
+app/NasUnet/VOC2012/
 
 app/logs
 .idea/

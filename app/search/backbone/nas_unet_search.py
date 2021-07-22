@@ -1,7 +1,7 @@
 from torch.functional import F
-from util.prim_ops_set import *
-from util.genotype import *
-from search.backbone.cell import Cell
+from NasUnet.util.prim_ops_set import *
+from NasUnet.util.genotype import *
+from NasUnet.search.backbone.cell import Cell
 
 class SearchULikeCNN(nn.Module):
     def __init__(self, input_c, c, num_classes, depth, meta_node_num=4,

@@ -17,7 +17,7 @@ import plotly.offline as opy
 import plotly.graph_objs as go
 from experiment import n_train
 from experiment import test
-from experiment import search_cell
+from NasUnet.experiment import search_cell
 import threading
 import sys
 import shutil
@@ -228,13 +228,14 @@ def train(request):
                 
             if request.POST.get('btn-train-init', True):
                 print("training starting.......")
-                sys.argv = ["hello"]
-                n_train.main()
                 alerter = Alerter()
                 alerter.send_emails("A New Model Training initiated on Cityscapes Dataset" +
                 "using Searched U-Net Architecture - \n\n" +  str(geno)
                 + "\n\n It will take few hours to complete." +
                 "We'll Update you once we are done with the Training!")
+                sys.argv = ["hello"]
+                n_train.main()
+                
 
                 # open tensorboard in another thread
                 t = threading.Thread(target=launchTensorBoard, args=([]))

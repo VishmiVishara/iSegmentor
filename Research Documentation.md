@@ -7,6 +7,4 @@
 # Why srchitecture searching for specif datasets is not important? 
     Searching architectures using NAS is costly. Therefore searching for transferable architectures were considered. 
 
-# 
-
 

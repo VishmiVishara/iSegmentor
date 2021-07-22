@@ -35,7 +35,7 @@ searching:
 test: null
 training:
   backbone: null
-  batch_size: 1
+  batch_size: 2
   depth: 5
   double_down_channel: false
   epoch: 1000
@@ -56,5 +56,5 @@ training:
   multi_gpus: true
   n_workers: 2
   report_freq: 100
-  resume: 'app\logs\checkpint.pth.tar'
+  resume: app\logs\checkpint.pth.tar
   val_batch_size: 1
