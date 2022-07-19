@@ -9,7 +9,7 @@ dj-database-url
 python-decouple
 gunicorn
 whitenoise
-torch==1.7.1+cu110 torchvision==0.8.2+cu110 torchaudio===0.7.2 -f https://download.pytorch.org/whl/torch_stable.html
+#torch==1.7.1+cu110 torchvision==0.8.2+cu110 torchaudio===0.7.2 -f https://download.pytorch.org/whl/torch_stable.html
 tqdm
 numpy
 pydicom
@@ -18,8 +18,8 @@ Pillow
 PyYAML
 plotly
 opencv-python
-pygraphviz
-graphviz
+# pygraphviz
+# graphviz
 scipy
 scikit-image
 adabound

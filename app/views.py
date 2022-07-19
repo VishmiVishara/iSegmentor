@@ -228,11 +228,11 @@ def train(request):
                 
             if request.POST.get('btn-train-init', True):
                 print("training starting.......")
-                alerter = Alerter()
-                alerter.send_emails("A New Model Training initiated on Cityscapes Dataset" +
-                "using Searched U-Net Architecture - \n\n" +  str(geno)
-                + "\n\n It will take few hours to complete." +
-                "We'll Update you once we are done with the Training!")
+                # alerter = Alerter()
+                # alerter.send_emails("A New Model Training initiated on Cityscapes Dataset" +
+                # "using Searched U-Net Architecture - \n\n" +  str(geno)
+                # + "\n\n It will take few hours to complete." +
+                # "We'll Update you once we are done with the Training!")
                 sys.argv = ["hello"]
                 n_train.main()
                 
