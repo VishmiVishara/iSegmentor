@@ -398,7 +398,7 @@ class Network(object):
 
             if step % self.cfg['training']['report_freq'] == 0:
 
-                print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" , isStop)
+                print("model train stop" , isStop)
                 if isStop:
                     break
 
@@ -473,7 +473,7 @@ class Network(object):
         with torch.no_grad():
             for step, data in enumerate(tbar):
 
-                print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" , isStop)
+                print("model train stop" , isStop)
                 if isStop:
                     break
 

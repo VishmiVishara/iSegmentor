@@ -234,7 +234,6 @@ def train(request):
             print(request)
 
             if request.POST.get('btn-train-init', True):
-                print('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$Button clicked')
                 print("training starting.......")
                 # alerter = Alerter()
                 # alerter.send_emails("A New Model Training initiated on Cityscapes Dataset" +
@@ -251,8 +250,7 @@ def train(request):
         # if request.GET.get('btn-train_stop', True):
         if request.method == 'GET':
             if 'btn-train_stop' in request.GET:
-                print(
-                    "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$training stop.......")
+                print("training stop.......")
                 n_train.isStop = True
                 print(n_train.isStop)
         
