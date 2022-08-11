@@ -1,3 +1,4 @@
+from alert_service import Alerter
 import json
 import os
 import yaml
@@ -8,6 +9,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.template import loader
 from django.http import HttpResponse
 from django import template
+from app.experiment.n_train import Network
 import schedule
 import time
 from pathlib import Path
@@ -22,11 +24,10 @@ import threading
 import sys
 import shutil
 import zipfile
-from datetime import datetime    
-import pytz    
-tz_NY = pytz.timezone('Asia/Kolkata')   
-datetime_NY = datetime.now(tz_NY)  
-from alert_service import Alerter
+from datetime import datetime
+import pytz
+tz_NY = pytz.timezone('Asia/Kolkata')
+datetime_NY = datetime.now(tz_NY)
 
 
 BASE_DIR = Path(__file__).parent
@@ -56,6 +57,8 @@ epoch, train_discriminator_loss_meter, train_generator_loss_meter, train_pixel_l
 test_pic_acc, test_mIoU = 0, 0
 
 # create a folder in the given path
+
+
 def createFolder(directory):
     try:
         if not os.path.exists(directory):
@@ -103,12 +106,12 @@ def index(request):
 
             dataset_list.append(datasetName)
             print(dataset_list)
-    
+
         # get dataset name to create a folder to save data
     if 'config_save' in request.GET:
         print("CONFIG SAVE.............")
         print(request.GET)
-        
+
         datasetName = request.GET.get('dataset')
         split = request.GET.get('split')
         s_epoch = request.GET.get('s_epoch')
@@ -131,15 +134,15 @@ def index(request):
         save_config['searching']['epoch'] = int(s_epoch)
         save_config['searching']['batch_size'] = int(s_batch_size)
         save_config['searching']['train_portion'] = float(train_portion)
-        save_config['searching']['arch_optimizer']['name']  = arch_optimizer
+        save_config['searching']['arch_optimizer']['name'] = arch_optimizer
         save_config['searching']['loss']['name'] = s_loss
 
         save_config['training']['geno_type'] = geno_type
         save_config['training']['epoch'] = int(t_epoch)
         save_config['training']['batch_size'] = int(t_batch_size)
         save_config['training']['val_batch_size'] = int(val_batch_size)
-        save_config['training']['model_optimizer']['name']  = model_optimizer
-        save_config['training']['loss']['name']  = t_loss
+        save_config['training']['model_optimizer']['name'] = model_optimizer
+        save_config['training']['loss']['name'] = t_loss
 
         filename = config_path + "/" + datasetName + ".yml"
         with open(filename, 'w') as f:
@@ -161,8 +164,8 @@ def index(request):
             # save default config to the context
             context['config'] = data
 
-    
     return render(request, 'index.html', context)
+
 
 def search(request):
     html_template = loader.get_template('search.html')
@@ -176,7 +179,9 @@ def search(request):
 
     return HttpResponse(html_template.render(context, request))
 
+
 def train(request):
+
     print("Load train")
     t = threading.Thread(target=launchTensorBoard, args=([]))
     t.start()
@@ -219,14 +224,17 @@ def train(request):
                         up=list_up_tuples, up_concat=up_range)
 
         # print(geno)
+        print(request)
 
         if request.method == 'POST':
             # if 'btn-tensorboard' in request.POST:
             #     t = threading.Thread(target=launchTensorBoard, args=([]))
             #     t.start()
 
-                
+            print(request)
+
             if request.POST.get('btn-train-init', True):
+                print('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$Button clicked')
                 print("training starting.......")
                 # alerter = Alerter()
                 # alerter.send_emails("A New Model Training initiated on Cityscapes Dataset" +
@@ -234,14 +242,27 @@ def train(request):
                 # + "\n\n It will take few hours to complete." +
                 # "We'll Update you once we are done with the Training!")
                 sys.argv = ["hello"]
+                n_train.isStop = False
                 n_train.main()
-                
+                # # open tensorboard in another thread
+                # t = threading.Thread(target=launchTensorBoard, args=([]))
+                # t.start()
 
-                # open tensorboard in another thread
-                t = threading.Thread(target=launchTensorBoard, args=([]))
-                t.start()
+        # if request.GET.get('btn-train_stop', True):
+        if request.method == 'GET':
+            if 'btn-train_stop' in request.GET:
+                print(
+                    "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$training stop.......")
+                n_train.isStop = True
+                print(n_train.isStop)
+        
+        # print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
+        # print(request)
+        # if(request.GET.get('btn-train_stop')):
+        #     print('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$Button clicked')
 
         return render(request, 'train.html', context)
+
 
 def loadChart(request):
     context = {}
@@ -260,7 +281,7 @@ def loadChart(request):
 
     # print(x_value)
     # print(y_value)
-    if train_generator_loss_meter > 0.0 :
+    if train_generator_loss_meter > 0.0:
         # print("Trueeeeeeeeeeeeeeeeeeeeeeeeeee")
         x_value.append(epoch)
         y_value.append(train_generator_loss_meter)
@@ -275,13 +296,14 @@ def loadChart(request):
 
         data = go.Data([trace1])
         layout = go.Layout(title="Epoch vs Generator Loss", xaxis={
-                        'title': 'epoch'}, yaxis={'title': 'generator Loss'})
+            'title': 'epoch'}, yaxis={'title': 'generator Loss'})
         figure = go.Figure(data=data, layout=layout)
         div = opy.plot(figure, auto_open=False, output_type='div')
         context['graph'] = div
 
     html_template = loader.get_template('live-chart.html')
     return HttpResponse(html_template.render(context, request))
+
 
 def loadChartDis(request):
 
@@ -298,8 +320,9 @@ def loadChartDis(request):
     pixAcc = n_train.pixAcc_
     mIoU = n_train.mIoU_
 
-    print("train_discriminator_loss_meter ", n_train.train_discriminator_loss_meter)
-    if train_discriminator_loss_meter > 0 :
+    print("train_discriminator_loss_meter ",
+          n_train.train_discriminator_loss_meter)
+    if train_discriminator_loss_meter > 0:
         x_value_dis.append(epoch)
         y_value_dis.append(train_discriminator_loss_meter)
 
@@ -313,7 +336,7 @@ def loadChartDis(request):
 
         data = go.Data([trace1])
         layout = go.Layout(title="Epoch vs Discriminator Loss", xaxis={
-                        'title': 'epoch'}, yaxis={'title': 'discriminator loss'})
+            'title': 'epoch'}, yaxis={'title': 'discriminator loss'})
         figure = go.Figure(data=data, layout=layout)
         div = opy.plot(figure, auto_open=False, output_type='div')
         context['graph_dis'] = div
@@ -321,9 +344,10 @@ def loadChartDis(request):
     html_template = loader.get_template('live-chart-dis.html')
     return HttpResponse(html_template.render(context, request))
 
+
 def evaluate(request):
     global test_dir
-    global zipname 
+    global zipname
     html_template = loader.get_template('evaluate.html')
     context = {}
     context["dataset_list"] = dataset_list
@@ -338,29 +362,30 @@ def evaluate(request):
             print(test_dir)
 
             test_mIoU = test.miou
-            test_pic_acc =  test.pixel_acc
+            test_pic_acc = test.pixel_acc
             time = test.total_time / 500
-            
+
             context["test_mIoU"] = str(round(test_mIoU * 100, 2))
-            context["test_pic_acc"]= str(round( test_pic_acc *100, 2))
-            context["time"] = str(round(time,2))
-           
+            context["test_pic_acc"] = str(round(test_pic_acc * 100, 2))
+            context["time"] = str(round(time, 2))
+
             print(test_mIoU)
             print(test_pic_acc)
             print(time)
 
     # if 'btn-download' in request.GET:
-        
 
     return HttpResponse(html_template.render(context, request))
+
 
 def zipdir(path, ziph):
     # ziph is zipfile handle
     for root, dirs, files in os.walk(path):
         for file in files:
-            ziph.write(os.path.join(root, file), 
-                       os.path.relpath(os.path.join(root, file), 
+            ziph.write(os.path.join(root, file),
+                       os.path.relpath(os.path.join(root, file),
                                        os.path.join(path, '..')))
+
 
 def download(request):
 
@@ -373,32 +398,29 @@ def download(request):
         print(zip_file_name)
         print(model_path)
 
-        print("GGGGGGGGGGG")
+        print("Download Results")
 
         zipname = zip_file_name + ".zip"
         zipf = zipfile.ZipFile(zipname, 'w', zipfile.ZIP_DEFLATED)
         zipdir(model_path, zipf)
         zipf.close()
         #shutil.make_archive(zip_file_name, 'zip', model_path)
-        #shutil.rmtree(model_path)
+        # shutil.rmtree(model_path)
         #context["test_download"] = zip_file_name
-        
 
     if zipname != ' ':
         with open(zipname, 'rb') as f:
             contents = f.read()
         # Set the return value of the HttpResponse
-        response = HttpResponse(contents, content_type = "application\zip")
+        response = HttpResponse(contents, content_type="application\zip")
         # Set the HTTP header for sending to browser
-        filename= 'results'+ str(datetime.now()) + ".zip"
+        filename = 'results' + str(datetime.now()) + ".zip"
         response['Content-Disposition'] = "attachment; filename=%s" % filename
         # Return the response value
         return response
+
 
 def launchTensorBoard():
     print(LOGS_ROOT)
     os.system('tensorboard --logdir ./app/logs/')
     return
-
-
-

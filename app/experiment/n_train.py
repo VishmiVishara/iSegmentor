@@ -8,6 +8,7 @@ from tqdm import tqdm
 import torch.nn as nn
 from torch.utils import data
 import torch.backends.cudnn as cudnn
+from subprocess import check_output
 
 sys.path.append('..')
 from options.train_options import TrainOptions
@@ -30,14 +31,15 @@ from tensorboardX import SummaryWriter
 # for ignoring warnings
 import warnings
 
-
 warnings.filterwarnings("ignore")
 
 epoch, train_discriminator_loss_meter, train_generator_loss_meter, train_pixel_loss, train_adversarial_loss_meter, pixAcc_, mIoU_ = 0.0,0.0,0.0,0.0,0.0,0.0,0.0
 check = 0
 
+isStop = False 
 class Network(object):
-    
+   
+    global isStop
     def __init__(self):
         self._init_configure()
         self._init_logger()
@@ -200,6 +202,7 @@ class Network(object):
         self.scheduler = get_scheduler(self.optimizer_G, scheduler_params)
 
     def run(self):
+
         self.logger.info('args = %s', self.cfg)
         # Setup Metrics
         self.metric_train = SegmentationMetric(19)  # classes
@@ -228,6 +231,10 @@ class Network(object):
             os.makedirs(self.save_image_path)
 
         for epoch in range(self.start_epoch, self.cfg['training']['epoch']):
+
+            print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" , isStop)
+            if isStop:
+                break
 
             self.epoch = epoch
 
@@ -359,6 +366,10 @@ class Network(object):
         tbar = tqdm(self.train_queue)
         for step, data in enumerate(tbar):
 
+            print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" , isStop)
+            if isStop:
+                break
+
             AtoB = self.args.direction == 'AtoB'
             self.real_A = data['A' if AtoB else 'B'].to(self.device)
             self.real_B = data['B' if AtoB else 'A'].to(self.device)
@@ -386,6 +397,11 @@ class Network(object):
             self.prev_time = time.time()
 
             if step % self.cfg['training']['report_freq'] == 0:
+
+                print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" , isStop)
+                if isStop:
+                    break
+
                 pixAcc, mIoU = self.metric_train.get()
 
                 # save image
@@ -456,6 +472,10 @@ class Network(object):
 
         with torch.no_grad():
             for step, data in enumerate(tbar):
+
+                print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" , isStop)
+                if isStop:
+                    break
 
                 AtoB = self.args.direction == 'AtoB'
                 real_A = data['A' if AtoB else 'B'].to(self.device)
@@ -554,10 +574,15 @@ class Network(object):
         self.best_adv_loss = cur_adv_loss if self.best_adv_loss > cur_adv_loss else self.best_adv_loss
         self.best_mIoU = mIoU if self.best_mIoU < mIoU else self.best_mIoU
 
+
+
 def main():
     print("call main")
     train_network = Network()
     train_network.run()
+
+def stop():
+    os._exit(0)
 
 if __name__ == '__main__':
     main()

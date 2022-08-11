@@ -24,13 +24,13 @@
     <div class="card-header bg-white border-0">
       <div class="row align-items-center">
         <div class="col-8">
-          <h3 class="mb-0">Train Pix2Pix GAN by using a searched Architecture as the Generator </h3>
+          <h3 class="mb-0">Train Pix2Pix GAN by using a NAS Searched Architecture as the Generator </h3>
         </div>
       </div>
     </div>
     <div class="card-body">
       <form method="post" id="search?_profile" enctype="multipart/form-data">
-        <h6 class="heading-small text-muted mb-4">Train Pix2Pix GAN</h6>
+        <h6 class="heading-small text-muted mb-4">Train The Segmentation GAN</h6>
         <div class="pl">
           <div class="row">
             <div class="col-lg-3" style="display: flex; justify-content: center;  vertical-align: middle;">
@@ -62,9 +62,13 @@
             </div>
             <div class="col-xl-4" style="display: flex; justify-content: center;  vertical-align: middle;">
               <!-- <div class="col-sm" style="display: flex; justify-content: center;  vertical-align: middle;"> -->
-                <form method="GET">
+                <form method="GET"  style="display: inline-block">
                   {% csrf_token %}
-                  <button type="submit" name="btn-train_init" id="btn-train_init" class="btn btn-default">Start Training</button>
+                  <button type="submit" class="btn btn-success" name="btn-train_init" id="btn-train_init" class="btn btn-default">Start Training</button>
+                </form>
+                <form method="GET" style="display: inline-block">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-danger" name="btn-train_stop" id="btn-train_stop" class="btn btn-default">Stop Training</button>
                 </form>
               <!-- </div> -->
               <!-- <div class="col-sm" style="display: flex; justify-content: center;  vertical-align: middle;"> -->
