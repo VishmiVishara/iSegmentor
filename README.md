@@ -57,7 +57,7 @@ pip3 install -r requirements.txt
 
 ## Citation
 
-If you are yousng this repo please cite these papers
+If you are using this repo please cite these papers
 ```
 @INPROCEEDINGS{9605889,
   author={Ganepola, Vayangi Vishmi Vishara and Wirasingha, Torin},
